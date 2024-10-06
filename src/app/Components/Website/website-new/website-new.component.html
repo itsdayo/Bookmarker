@@ -1,0 +1,107 @@
+<nav class="row navbar navbar-dark bg-primary fixed-top">
+  <div class="col-sm-4 d-none d-sm-block">
+    <div>
+      <a class="do-font-white" routerLink="/user/{{ uid }}/website">
+        <i class="fas fa-chevron-left"></i
+      ></a>
+      <a
+        class="container-fluid do-font-white do-no-underline"
+        routerLink="/user/{{ uid }}/website"
+        ><b class="do-font-white">Websites</b></a
+      >
+      <a
+        routerLink="/user/{{ uid }}/website/new"
+        class="do-font-white float-right"
+        ><i class="fas fa-plus"></i
+      ></a>
+    </div>
+  </div>
+
+  <div class="col-sm-8">
+    <div class="container-fluid">
+      <a class="do-no-underline" routerLink="/user/{{ uid }}/website/new">
+        <b class="do-font-white">New Website</b></a
+      >
+      <button
+        [disabled]="f.invalid"
+        class="do-button do-font-white float-right"
+        form="websiteForm"
+        type="submit"
+      >
+        <i class="fas fa-check"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="row">
+  <div class="col-sm-4 d-none d-sm-block">
+    <div class="container-fluid">
+      <ul class="list-group">
+        <div>
+          <li *ngFor="let website of websites" class="do-hover list-group-item">
+            <a routerLink="/user/{{ uid }}/website/{{ website.id }}/page">{{
+              website.name
+            }}</a>
+            <a
+              class="float-right"
+              routerLink="/user/{{ uid }}/website/{{ website.id }}"
+            >
+              <i class="fas fa-cog"></i
+            ></a>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-sm-8">
+    <div class="container-fluid">
+      <form id="websiteForm" (ngSubmit)="create()" #f="ngForm">
+        <div class="alert alert-danger" *ngIf="name.invalid && name.touched">
+          Please enter a Website Name!
+        </div>
+        <!-- Website Name -->
+        <div class="form-group">
+          <label for="name"><b> Website Name</b></label>
+          <input
+            class="border form-control btn-block"
+            type="text"
+            name="name"
+            placeholder="Type your Website name here"
+            required
+            ngModel
+            #name="ngModel"
+          />
+        </div>
+
+        <label for="decription"><b>Website Description</b></label>
+        <textarea
+          id="description"
+          class="form-control border btn-block"
+          rows="3"
+          name="description"
+          placeholder="Input your description here"
+          ngModel
+          #description="ngModel"
+        ></textarea>
+
+        <!--[disabled]="f.invalid" -->
+        <button
+          [disabled]="f.invalid"
+          class="do-margin btn btn-success float-right"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-dark bg-primary fixed-bottom">
+  <div class="do-width">
+    <a class="do-font-white float-right" routerLink="/user"
+      ><i class="fas fa-user"></i>
+    </a>
+  </div>
+</nav>

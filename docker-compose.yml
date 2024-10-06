@@ -1,0 +1,38 @@
+version: "3"
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: web-maker
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - bookmarker-api
+
+  app:
+    build: .
+    command: sh -c "npm run migrate  && node server.js"
+    ports:
+      - "3100:3100"
+    depends_on:
+      - db
+    volumes:
+      - ./migrations:/app/migrations
+      - ./knexfile.js:/app/knexfile.js
+    environment:
+      - DATABASE_URL=postgres://myuser:mypassword@db:5432/web-maker
+      - DATABASE_HOSTNAME=db
+      - DB_PORT=5432
+      - DATABASE_DB=web-maker
+      - DATABASE_USERNAME=myuser
+      - DATABASE_PASSWORD=mypassword
+    networks:
+      - bookmarker-api
+
+networks:
+  bookmarker-api:
+    driver: bridge

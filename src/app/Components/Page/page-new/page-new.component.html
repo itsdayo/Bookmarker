@@ -1,0 +1,68 @@
+<nav class="row navbar navbar-dark fixed-top do-gray">
+  <div class="container-fluid">
+    <div>
+      <a
+        class="do-black float-left"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page"
+        ><i class="fas fa-chevron-left"></i
+      ></a>
+      <a
+        class="container-fluid do-no-underline do-font-white"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page/new"
+        ><b>New Page</b></a
+      >
+    </div>
+    <button
+      [disabled]="f.invalid"
+      type="submit"
+      form="pageForm"
+      class="do-button do-black float-right"
+    >
+      <i class="fas fa-check"></i>
+    </button>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <form (ngSubmit)="create()" id="pageForm" #f="ngForm">
+    <div class="alert alert-danger" *ngIf="name.invalid && name.touched">
+      Please enter a Name!
+    </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        name="name"
+        placeholder="Enter your page name here"
+        class="form-control"
+        required
+        ngModel
+        #name="ngModel"
+      />
+    </div>
+    <label for="description">Description</label>
+    <input
+      type="text"
+      name="description"
+      placeholder="Enter your page description here"
+      class="form-control"
+      ngModel
+      #description="ngModel"
+    />
+    <button
+      type="submit"
+      [disabled]="f.invalid"
+      class="btn do-margin btn-success float-right"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+<nav class="navbar navbar-dark do-gray fixed-bottom">
+  <div class="do-width">
+    <a routerLink="/user/{{ uid }}" class="do-margin-right float-right">
+      <i class="fas fa-user"></i>
+    </a>
+  </div>
+</nav>

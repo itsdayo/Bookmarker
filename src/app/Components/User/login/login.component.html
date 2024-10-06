@@ -1,0 +1,27 @@
+<div class= "container">
+	<h1> Login</h1>
+
+	<form (ngSubmit) = 'login()' #f ='ngForm'>
+		<div class="alert alert-danger" *ngIf="!username.valid && username.touched">
+	      Please enter username!
+	   </div> 
+		<div class="alert-danger alert" *ngIf="!password.valid && password.touched">
+	      Please enter password!
+	   </div> 
+
+		<div class="form-group">
+			<input type="text"  ngModel #username="ngModel" name="username" placeholder="Username" class="form-control"  required>
+		</div>
+
+		<div class="form-group"> 
+			<input type="password" name="password" placeholder="Password" ngModel #password="ngModel"  class="form-control" required>
+		</div>
+
+			<div *ngIf='errorFlag' class='alert alert-danger'>{{errorMsg}}
+			</div> 
+				<button  class="btn btn-primary btn-block" [disabled]="f.invalid" type="submit">Login</button>
+				<button type="button" class="btn btn-secondary btn-block" routerLink="/register">Register</button>
+	</form>
+</div>
+
+

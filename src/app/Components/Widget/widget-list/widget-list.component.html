@@ -1,0 +1,107 @@
+<nav class="row navbar navbar-dark fixed-top do-gray">
+  <div class="container-fluid">
+    <div>
+      <a
+        class="do-black float-left"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page"
+        ><i class="fas fa-chevron-left"></i
+      ></a>
+      <a
+        class="container-fluid do-no-underline do-font-white"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
+        ><b>Widgets</b></a
+      >
+    </div>
+    <a
+      routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/new"
+      class="do-margin-right do-black float-right"
+      ><i class="fas fa-plus"></i
+    ></a>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div *ngFor="let widget of widgets">
+    <div class="do-absolute-right do-front">
+      <a
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/{{
+          widget.id || '' 
+        }}"
+        ><i class="fas fa-cog"></i
+      ></a>
+      <!-- <a href="#" class="do-margin-right"><i class="fas fa-bars"></i></a> -->
+    </div>
+    <div class="do-margin-top do-margin-bottom" [ngSwitch]="widget.widgetType || '' ">
+      <div *ngSwitchCase="'HEADING'">
+        <div [ngSwitch]="widget.size || '' ">
+          <div *ngSwitchCase="1">
+            <h6>{{ widget.text || ''  }}</h6>
+          </div>
+          <div *ngSwitchCase="2">
+            <h5>{{ widget.text || '' }}</h5>
+          </div>
+          <div *ngSwitchCase="3">
+            <h4>{{ widget.text || '' }}</h4>
+          </div>
+          <div *ngSwitchCase="4">
+            <h3>{{ widget.text || '' }}</h3>
+          </div>
+          <div *ngSwitchCase="5">
+            <h2>{{ widget.text || ''  }}</h2>
+          </div>
+          <div *ngSwitchCase="6">
+            <h1>{{ widget.text || ''  }}</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="do-margin-top" *ngSwitchCase="'TEXT'">
+        <div [ngSwitch]="widget.size || 1 ">
+          <div *ngSwitchCase="1">
+            <div style="font-size: xx-small">{{ widget.text || ''  }}</div>
+          </div>
+          <div *ngSwitchCase="2">
+            <div style="font-size: x-small">{{ widget.text || ''  }}</div>
+          </div>
+          <div *ngSwitchCase="3">
+            <div style="font-size: small">{{ widget.text || ''  }}</div>
+          </div>
+          <div *ngSwitchCase="4">
+            <div style="font-size: medium">{{ widget.text  || '' }}</div>
+          </div>
+          <div *ngSwitchCase="5">
+            <div style="font-size: large">{{ widget.text || ''  }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="do-margin-top" *ngSwitchCase="'IMAGE'">
+        <img [src]="widget.url || ''  " [style.width]="widget?.width  || ''  " />
+      </div>
+      <div class="do-margin-top" *ngSwitchCase="'YOUTUBE'">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe
+            [src]="this.getYoutubeUrl(widget.url || '' )"
+            [style.width]="widget.width || '' "
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- HTML -->
+      <div *ngSwitchCase="'HTML'">
+        <div [innerHTML]="parseHTML(widget.text || '' )"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="navbar navbar-dark do-gray fixed-bottom">
+  <div class="do-width">
+    <a href="#" class="do-black"> <i class="fas fa-play"></i></a>
+    <a href="#" class="do-black"> <i class="fas fa-eye"></i></a>
+    <a routerLink="/user" class="do-margin-right float-right">
+      <i class="fas fa-user"></i>
+    </a>
+  </div>
+</footer>

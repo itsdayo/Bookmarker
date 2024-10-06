@@ -1,0 +1,100 @@
+<nav class="row navbar navbar-dark fixed-top do-gray">
+  <div class="container-fluid">
+    <div>
+      <a
+        class="do-black float-left"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
+        ><i class="fas fa-chevron-left"></i
+      ></a>
+      <a
+        class="container-fluid do-no-underline do-font-white"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+          pid
+        }}/widget/wgid"
+        ><b>Widget Edit</b></a
+      >
+    </div>
+    <button
+      [disabled]="f.invalid"
+      type="submit"
+      form="widgetForm"
+      routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
+      class="do-button do-black float-right"
+    >
+      <i class="fas fa-check"></i>
+    </button>
+  </div>
+</nav>
+
+<form (ngSubmit)="update()" #f="ngForm" id="widgetForm" class="container-fluid">
+  <div class="form-group">
+    <label for="name">Text</label>
+    <textarea
+      ngModel="{{ widget.text }}"
+      #name="ngModel"
+      type="text"
+      name="text"
+      class="form-control"
+      placeholder="Enter a widget text..."
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label for="text">Size</label>
+    <select
+      ngModel="{{ widget.size }}"
+      #size="ngModel"
+      type="number"
+      name="rows"
+      class="form-control"
+      placeholder="Enter a widget size..."
+    >
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </div>
+
+  <label for="placeholder">PlaceHolder</label>
+  <div>
+    <input
+      [(ngModel)]="widget.placeholder"
+      type="text"
+      class="form-control"
+      id="Name"
+      name="placeholder"
+      placeholder="Enter a placeholder... "
+      required
+    />
+  </div>
+
+  <!-- <label for="formatted">Formatted</label>
+
+  <input
+    [(ngModel)]="widget.formatted"
+    type="checkbox"
+    id="formatted"
+    name="formatted"
+    #formatted="ngModel"
+  /> -->
+
+  <br />
+
+  <button
+    type="submit"
+    [disabled]="f.invalid"
+    class="btn btn-block btn-primary"
+  >
+    Submit
+  </button>
+  <button type="button" class="btn btn-block btn-danger" (click)="delete()">
+    Delete
+  </button>
+</form>
+
+<nav class="navbar navbar-dark do-gray fixed-bottom">
+  <div class="do-width">
+    <a routerLink="/user" class="float-right"> <i class="fas fa-user"></i> </a>
+  </div>
+</nav>

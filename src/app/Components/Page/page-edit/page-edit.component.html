@@ -1,0 +1,74 @@
+<nav class="row navbar navbar-dark fixed-top do-gray">
+  <div class="container-fluid">
+    <div>
+      <a
+        class="do-black float-left"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page"
+        ><i class="fas fa-chevron-left"></i
+      ></a>
+      <a
+        class="container-fluid do-no-underline do-font-white"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}"
+        ><b>Edit Page</b></a
+      >
+    </div>
+    <button
+      type="submit"
+      [disabled]="f.invalid"
+      form="pageform"
+      class="do-button do-black float-right"
+    >
+      <i class="fas fa-check"></i>
+    </button>
+  </div>
+</nav>
+<div class="container-fluid">
+  <form (ngSubmit)="update()" id="pageform" #f="ngForm">
+    <div *ngIf="name.invalid && name.touched" class="alert alert-danger">
+      Please enter a Name!
+    </div>
+
+    <div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          name="name"
+          ngModel="{{ page.name }}"
+          #name="ngModel"
+          required
+          placeholder="Please enter your name"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <label for="dsecription">Description</label>
+    <input
+      type="text"
+      name="description"
+      placeholder="Please enter your description"
+      class="form-control"
+      ngModel="{{ page.description }}"
+      #description="ngModel"
+    />
+
+    <button type="button" (click)="delete()" class="do-margin btn btn-danger">
+      Delete
+    </button>
+    <button
+      [disabled]="f.invalid"
+      type="submit"
+      class="do-margin btn btn-success float-right"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+<nav class="navbar navbar-dark do-gray fixed-bottom">
+  <div class="do-width">
+    <a routerLink="/user" class="do-margin-right float-right">
+      <i class="fas fa-user"></i>
+    </a>
+  </div>
+</nav>

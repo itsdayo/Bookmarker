@@ -1,0 +1,9 @@
+[build]
+    base = "portfolio-2023-angular"
+    command = "npm run build"
+    publish = "bookmarker-storer/dist"
+
+    [[redirects]]
+    from = "/*"
+    to = "/index.html"
+    status = 200

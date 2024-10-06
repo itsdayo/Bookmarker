@@ -1,0 +1,165 @@
+<nav class="row navbar navbar-dark fixed-top do-gray">
+  <div class="container-fluid">
+    <div>
+      <a
+        class="do-black float-left"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
+        ><i class="fas fa-chevron-left"></i
+      ></a>
+      <a
+        class="container-fluid do-no-underline do-font-white"
+        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/{{
+          wgid
+        }}"
+        ><b>Widget Edit</b></a
+      >
+    </div>
+    <button
+      [disabled]="f.invalid"
+      type="submit"
+      form="widgetForm"
+      class="do-button do-black float-right"
+    >
+      <i class="fas fa-check"></i>
+    </button>
+  </div>
+</nav>
+
+<form
+  (ngSubmit)="update($event)"
+  #f="ngForm"
+  id="widgetForm"
+  class="container-fluid"
+>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input
+      ngModel="{{ widget.name }}"
+      #name="ngModel"
+      type="text"
+      name="name"
+      class="form-control"
+      placeholder="Enter a widget name..."
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="text">Text</label>
+    <input
+      ngModel="{{ widget.text }}"
+      #text="ngModel"
+      type="text"
+      name="text"
+      class="form-control"
+      placeholder="Enter a widget text..."
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="width">Width</label>
+    <input
+      ngModel="{{ widget.width }}"
+      #width="ngModel"
+      type="text"
+      name="width"
+      class="form-control"
+      placeholder="100%"
+    />
+  </div>
+  <div [ngSwitch]="imageType">
+    <div *ngSwitchCase="'url'" class="form-group">
+      <div class="alert alert-danger" *ngIf="url.invalid && url.touched">
+        Please enter a url!
+      </div>
+      <div class="alert alert-danger" *ngIf="width.invalid && width.touched">
+        Please enter a width!
+      </div>
+
+      <label for="url">URL</label>
+      <br />
+      <input
+        ngModel="{{ widget.url }}"
+        #url="ngModel"
+        type="text"
+        name="url"
+        class="do-image-input"
+        placeholder="https://www.image.com"
+      />
+      <!-- <button (click)="changeImageStatus()" class="btn btn-danger btn">
+        Cancel
+      </button> -->
+    </div>
+
+    <!-- <div class="form-group">
+			<label for="upload">Upload</label>
+			<input class="form-control" type="file" name="upload">
+    </div> -->
+    <!-- <form (ngSubmit)="uploadFile()" #f="ngForm" id="fileForm"> -->
+
+    <div *ngSwitchCase="'file'" class="form-group do-short-width">
+      <label>Upload</label>
+      <br />
+      <!-- <input
+        ngModel="$event"
+        name="fileUpload"
+        type="file"
+        class="do-image-input"
+      /> -->
+
+      <button (click)="changeImageStatus()" class="btn btn-success btn">
+        Enter a Url
+      </button>
+    </div>
+    <span *ngSwitchDefault> Not working</span>
+  </div>
+  <!-- </form> -->
+
+  <!-- <form
+    (ngSubmit)="update()" #f="ngForm" id="widgetForm" class="container-fluid"
+    action="{{ baseUrl }}/api/user/{{ uid }}/website/{{ wid }}/page/{{
+      pid
+    }}/widget/{{ wgid }}/upload"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div>
+      <label class="form-group">Upload</label>
+      <input
+        ngModel="{{ widget.upload }}"
+        #width="ngModel"
+        name="myFile"
+        type="file"
+        class="form-control"
+      />
+      <br />
+
+      <button type="button" class="btn btn-block btn-secondary">Upload</button>
+    </div>
+  </form> -->
+  <br />
+  <button
+    type="button"
+    class="btn btn-primary btn-block"
+    routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/{{
+      wgid
+    }}/flickr"
+  >
+    Photos from Flickr
+  </button>
+  <button
+    type="submit"
+    [disabled]="f.invalid"
+    class="btn btn-block btn-primary"
+  >
+    Submit
+  </button>
+  <button type="button" class="btn btn-block btn-danger" (click)="delete()">
+    Delete
+  </button>
+</form>
+
+<nav class="navbar navbar-dark do-gray fixed-bottom">
+  <div class="do-width">
+    <a routerLink="/user" class="float-right"> <i class="fas fa-user"></i> </a>
+  </div>
+</nav>

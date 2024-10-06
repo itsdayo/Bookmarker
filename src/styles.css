@@ -1,1 +1,150 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  padding-top: 55px;
+  padding-bottom: 50px;
+}
+
+#bottom {
+  width: 100%;
+  bottom: 0px;
+}
+
+#center {
+  right: 100%;
+}
+
+.navbar-brand {
+  color: white;
+}
+.do-font-white {
+  color: white;
+}
+
+.do-width {
+  width: 100%;
+}
+
+.do-left-padding {
+  padding-left: 10px;
+}
+
+.do-no-underline:hover {
+  text-decoration: none;
+}
+.do-margin-right {
+  margin-right: 10px;
+}
+.do-margin-top {
+  margin-top: 50px;
+}
+/* .do-margin-bottom {
+    margin-bottom: 10px;
+  } */
+.do-short-width {
+  width: 50%;
+  /* display: inline; */
+}
+.do-image-input {
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s;
+}
+.do-gray {
+  background-color: gray;
+}
+
+.do-black {
+  color: black;
+}
+
+.do-80-width {
+  width: 80%;
+}
+.do-absolute-right {
+  position: absolute;
+  right: 15px;
+}
+
+.do-front {
+  z-index: 2;
+}
+.do-white-button-font {
+  color: #fff;
+}
+
+.do-border {
+  border: ridge;
+}
+
+.do-hover a:hover {
+  text-decoration: none;
+  color: red;
+}
+
+.do-margin {
+  margin-top: 5px;
+}
+
+.video-responsive {
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+  height: 0;
+}
+.video-responsive iframe {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.do-button {
+  background-color: transparent;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+}
+
+.do-blue {
+  color: #0089ff;
+}
+.do-blue :hover {
+  text-decoration: none;
+}
+.do-front {
+  z-index: 2;
+}
+
+.animate-bottom {
+  position: relative;
+  animation: animatebottom 0.5s;
+}
+
+@keyframes animatebotton {
+  from {
+    bottom: -300px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: -1;
+  }
+}
+
+.loading-iframe {
+  background: url(assets/loading7.gif) center center no-repeat;
+}

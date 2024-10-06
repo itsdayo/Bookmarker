@@ -1,0 +1,43 @@
+<nav class="row navbar navbar-dark bg-primary fixed-top">
+  <div class="container-fluid">
+    <div>
+      <a routerLink="/user" class="do-font-white">
+        <i class="fas fa-chevron-left"></i
+      ></a>
+      <a
+        routerLink="/user/{{ uid }}/website"
+        class="do-font-white container-fluid do-no-underline"
+        ><b class="do-font-white"> Websites</b></a
+      >
+    </div>
+    <a
+      routerLink="/user/{{ uid }}/website/new"
+      class="float-right do-font-white"
+      ><i class="fas fa-plus"></i>
+    </a>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <ul>
+    <li class="list-group-item do-hover" *ngFor="let website of websites">
+      <a routerLink="/user/{{ uid }}/website/{{ website.id }}/page">{{
+        website.name
+      }}</a>
+      <a
+        class="float-right"
+        routerLink="/user/{{ uid }}/website/{{ website.id }}"
+      >
+        <i class="fas fa-cog"></i
+      ></a>
+    </li>
+  </ul>
+</div>
+
+<nav class="navbar navbar-dark bg-primary fixed-bottom">
+  <div class="do-width">
+    <a routerLink="/user" class="do-font-white float-right"
+      ><i class="fas fa-user"></i>
+    </a>
+  </div>
+</nav>

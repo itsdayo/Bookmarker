@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 // http library allows us to create http servers
 const http = require("http");
 const path = require("path");
+const cors = require("cors");
 
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -18,6 +19,24 @@ const knexConfig = require("./knexfile");
 
 const db = knex(knexConfig.production);
 const passport = require("./passport-config");
+
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  credentials: true, // Allow credentials (cookies, authorization headers)
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allowed HTTP methods
+  allowedHeaders: [
+    "X-PINGOTHER",
+    "Content-Type",
+    "X-Requested-With",
+    "Authorization",
+    "Application-Context",
+    "recaptcha",
+    "Apollo-Require-Preflight",
+  ], // Allowed headers
+  optionsSuccessStatus: 204, // Response status code for successful OPTIONS request
+};
+
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 

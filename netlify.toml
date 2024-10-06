@@ -2,7 +2,7 @@
   # Specify the directory where the build output will be stored.
   publish = "dist/bookmarker-storer" 
   # Command to run the Angular build.
-  # command = "ng build"
+  command = "ng build --configuration production"
 
 # Redirect rules to handle Angular routing (Single Page Application)
 [[redirects]]

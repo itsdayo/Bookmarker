@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  baseUrl: "http://localhost:3100",
+  baseUrl: process.env["NG_APP_BASE_URL"],
+  // baseUrl: "http://localhost:3100",
 };

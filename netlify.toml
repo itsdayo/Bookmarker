@@ -1,9 +1,11 @@
 [build]
-    base = "portfolio-2023-angular"
-    command = "npm run build"
-    publish = "bookmarker-storer/dist"
+  # Specify the directory where the build output will be stored.
+  publish = "dist/bookmarker-storer" 
+  # Command to run the Angular build.
+  # command = "ng build"
 
-    [[redirects]]
-    from = "/*"
-    to = "/index.html"
-    status = 200
+# Redirect rules to handle Angular routing (Single Page Application)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

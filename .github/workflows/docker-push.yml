@@ -2,7 +2,9 @@ name: docker-push
 
 on:
   workflow_dispatch:
-  # push:
+  push:
+    banches:
+      - 'main'
 
 jobs:
   docker:

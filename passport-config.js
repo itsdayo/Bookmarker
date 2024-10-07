@@ -1,41 +1,45 @@
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
 const bcrypt = require("bcrypt-nodejs");
 const userModel = require("./server/models/user/user.model.server"); // Adjust the path to your user model
 
-passport.use(new LocalStrategy(localStrategy));
+const cookieExtractor = (req) => {
+  let token = null;
+  if (req && req.signedCookies) {
+    ({ token } = req.signedCookies);
+  }
+  return token;
+};
 
-function localStrategy(username, password, done) {
-  userModel
-    .findUserByUsername(username)
-    .then((user) => {
+const opts = {
+  jwtFromRequest: cookieExtractor,
+  secretOrKey: process.env.SESSION_SECRET || "test",
+};
 
-      // Check if user exists and compare passwords
-      if (user && bcrypt.compareSync(password, user.password)) {
-        return done(null, user); // Successfully authenticated
-      } else {
-        return done(null, false, { message: "Invalid credentials." }); // Authentication failed
+passport.use(
+  "jwt",
+  new JwtStrategy(opts, async (jwt_payload, done) => {
+    try {
+      const user = await db
+        .table("users")
+        .where({ username: jwt_payload.username })
+        .first();
+      if (user) {
+        done(null, jwt_payload);
       }
-    })
-    .catch((err) => {
-      console.error("Database error:", err);
-      return done(err); // Handle any errors from the database
-    });
-}
+    } catch (err) {
+      console.log(err);
+      done(err);
+    }
+  })
+);
 
 passport.serializeUser((user, done) => {
-  done(null, user); // Store user ID in the session
+  done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-  userModel
-    .findUserById(user.id)
-    .then((user) => {
-      done(null, user); // Retrieve user by ID from the database
-    })
-    .catch((err) => {
-      done(err); // Handle errors
-    });
+  done(null, user);
 });
 
 module.exports = passport;

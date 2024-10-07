@@ -20,25 +20,7 @@ const knexConfig = require("./knexfile");
 const db = knex(knexConfig.production);
 const passport = require("./passport-config");
 
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
-  credentials: true, // Allow credentials (cookies, authorization headers)
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allowed HTTP methods
-  allowedHeaders: [
-    "X-PINGOTHER",
-    "Content-Type",
-    "X-Requested-With",
-    "Authorization",
-    "Application-Context",
-    "recaptcha",
-    "Apollo-Require-Preflight",
-  ], // Allowed headers
-  optionsSuccessStatus: 204, // Response status code for successful OPTIONS request
-};
-
-app.use(cors(corsOptions));
-
-app.use(cookieParser());
+app.use(cookieParser(process.env.SESSION_SECRET|| "test"));
 
 if (process.env.SESSION_SECRET) {
   app.use(
@@ -46,6 +28,15 @@ if (process.env.SESSION_SECRET) {
       secret: process.env.SESSION_SECRET,
       resave: true,
       saveUninitialized: true,
+      cookie: {
+        secure: true, // true if on HTTPS
+        sameSite: "None", // cross-site cookie
+        path: "/",
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        httpOnly: true, // prevents access by JavaScript
+        domain: process.env.CORS_ORIGIN,
+        cookie: { secure: false },
+      },
     })
   );
 } else {
@@ -64,21 +55,30 @@ app.use(passport.session());
 // Initialize bodyparser. We are turn on the feature to parse json data.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.json());
 // Point static path to dist -- For building -- REMOVE
 app.use(express.static(path.join(__dirname, "dist")));
 
-// CORS - Cross-Origin Resource Sharing
-// For security purposes, browser only allowed client side to request data from its own server. CORS is a mechanism that determines whether to block or fulfill requests for restricted resources on a web page from another domain outside the domain from which the resource originated.
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-});
+
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || "http://localhost:4200",
+  credentials: true, // Allow credentials (cookies, authorization headers)
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allowed HTTP methods
+  allowedHeaders: [
+    "X-PINGOTHER",
+    "Content-Type",
+    "X-Requested-With",
+    "Authorization",
+    "Application-Context",
+    "recaptcha",
+    "Apollo-Require-Preflight",
+  ], // Allowed headers
+  optionsSuccessStatus: 204, // Response status code for successful OPTIONS request
+};
+
+app.use(cors(corsOptions));
+
 
 const port = process.env.PORT || "3100";
 app.set("port", port);

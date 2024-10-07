@@ -1,7 +1,7 @@
 module.exports = function (app) {
   const userModel = require("../models/user/user.model.server.js");
   const bcrypt = require("bcrypt-nodejs");
-  const passport = require("../../passport-config.js");
+  const jwt = require("jsonwebtoken");
 
   app.get("/api/user/:uid", findUserById);
   app.get("/api/user", findUser);
@@ -9,26 +9,74 @@ module.exports = function (app) {
   app.put("/api/user/:uid", updateUser);
   app.delete("/api/user/:uid", deleteUser);
   app.post("/api/register", register);
-  app.post("/api/login", passport.authenticate("local"), login);
+  app.post("/api/login", login);
   app.post("/api/logout", logout);
   app.post("/api/loggedIn", loggedin);
 
   function loggedin(req, res) {
-    if (req.isAuthenticated()) {
-      res.send(req.user);
-    } else {
-      res.send("0");
-    }
+    const token = req.body.authToken;;
+    if (!token) return res.send("0");
+
+    jwt.verify(
+      token,
+      process.env.SESSION_SECRET || "test",
+      async (err, decoded) => {
+        if (err) return res.send("0");
+
+        const username = decoded.username;
+        const data = await userModel.findUserByUsername(username);
+        res.send(data);
+      }
+    );
   }
 
   function logout(req, res) {
-    req.logOut();
-    res.send(200);
+    req.logOut((err) => {
+      if (err) {
+        console.error(err);
+        res.sendStatus(500)
+      } else {
+        res.json({ success: true });
+      }
+    });
   }
 
-  function login(req, res) {
-    var user = req.user;
-    res.json(user);
+  async function login(req, res) {
+    try {
+      const user = req.body; // Assuming user data is in req.body
+      const data = await userModel.findUserByUsername(user.username); // Fetch user data
+
+      if (!data) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      // Compare the passwords
+      bcrypt.compare(user.password, data.password, (err, isMatch) => {
+        if (err) {
+          return res.status(500).json({ message: "Internal server error" });
+        }
+
+        if (!isMatch) {
+          return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        const payload = { username: data.username };
+        const authToken = jwt.sign(
+          payload,
+          process.env.SESSION_SECRET || "test",
+          {
+            expiresIn: "1h",
+          }
+        );
+
+        data.authToken = authToken;
+
+        res.json(data);
+      });
+    } catch (err) {
+      console.error(err, "login error");
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
 
   function register(req, res) {

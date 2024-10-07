@@ -33,8 +33,8 @@
 			<input type="text" name="lastName" ngModel='{{user.lastName}}' #lastName='ngModel'  placeholder="last name" class="form-control">
 		</div>
 
-			<a class="btn btn-primary btn-block" routerLink='/user/{{uid}}/website'>Websites</a>
-			<a  class="btn btn-danger btn-block" routerLink="/login">Log Out</a>
+			<button class="btn btn-primary btn-block" routerLink='/user/{{uid}}/website'>Websites</button>
+			<button  (click)="logout()" class="btn btn-danger btn-block">Log Out</button>
 	</form>
 </div>
 

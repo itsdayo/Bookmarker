@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model.client';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ export class UserService {
 
   options = {
     withCredentials: true,
+    credentials: 'include',
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
     }),
@@ -25,8 +26,12 @@ export class UserService {
 
   loggedIn() {
     this.options.withCredentials = true;
+
+    const storedToken = localStorage.getItem('authToken');
+    const authToken = storedToken ? JSON.parse(storedToken) : null;
+
     return this.http
-      .post(this.baseUrl + '/api/loggedIn', '', this.options)
+      .post(this.baseUrl + '/api/loggedIn', { authToken }, this.options)
       .pipe(
         map((res) => {
           const user = res;
@@ -52,6 +57,7 @@ export class UserService {
       .post<User>(this.baseUrl + '/api/login', body, this.options)
       .pipe(
         map((res) => {
+          localStorage.setItem('authToken', JSON.stringify(res.authToken));
           return res;
         })
       );
@@ -127,10 +133,16 @@ export class UserService {
 
   logout() {
     // this.options.withCredentials = true;
-    return this.http.post(this.baseUrl + '/api/logout', '', this.options).pipe(
+
+    return this.http.post(this.baseUrl + '/api/logout', '').pipe(
       map((res) => {
         this.sharedService.user = null;
+        localStorage.setItem('authToken', '');
         return res;
+      }),
+      catchError((err: any) => {
+        console.error('Logout error:', err);
+        return Promise.reject(err);
       })
     );
   }

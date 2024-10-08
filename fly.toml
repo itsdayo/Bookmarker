@@ -12,17 +12,6 @@ primary_region = 'sjc'
 [deploy]
   release_command = "npm run migrate"
 
-[env]
-  DATABASE_DB = 'db'
-  DATABASE_HOSTNAME = 'bookmarker-db.flycast'
-  DATABASE_PASSWORD = 'secret610'
-  DATABASE_USERNAME = 'postgres'
-  NODE_ENV = 'production'
-  SESSION_SECRET = 'U9ayLjWTwaNoPuByeNc95IqKylecRLEu'
-  DATABASE_URL = "postgres://bookmarker_storer:kEJVuO11b4EJZcu@bookmarker-db.flycast:5432/bookmarker_storer?sslmode=disable"
-  CORS_ORIGIN= "https://bookmarker-storer.netlify.app"
-  HOST_URL="bookmarker-storer.fly.dev"
-
 [http_service]
   internal_port = 3100
   force_https = true

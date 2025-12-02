@@ -20,51 +20,39 @@ const knexConfig = require("./knexfile");
 const db = knex(knexConfig.production);
 const passport = require("./passport-config");
 
-app.use(cookieParser(process.env.SESSION_SECRET|| "test"));
+// CORS configuration
+const allowedOrigins = [
+  "https://bookmarker-storer.netlify.app",
+  "https://bookmarker-storer.netlify.app/",
+  "https://bookmarker-server.onrender.com",
+  "https://bookmarker-server.onrender.com/"
+];
 
-if (process.env.SESSION_SECRET) {
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: true,
-      saveUninitialized: true,
-      cookie: {
-        secure: true, // true if on HTTPS
-        sameSite: "None", // cross-site cookie
-        path: "/",
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
-        httpOnly: true, // prevents access by JavaScript
-        domain: process.env.CORS_ORIGIN,
-        cookie: { secure: false },
-      },
-    })
-  );
-} else {
-  app.use(
-    session({
-      secret: "test",
-      resave: true,
-      saveUninitialized: true,
-    })
+// Add development origins if not in production
+if (process.env.NODE_ENV !== "production") {
+  allowedOrigins.push(
+    "http://localhost:4200",
+    "http://localhost:4200/",
+    "http://localhost:3000",
+    "http://localhost:3000/"
   );
 }
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Initialize bodyparser. We are turn on the feature to parse json data.
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(express.json());
-// Point static path to dist -- For building -- REMOVE
-app.use(express.static(path.join(__dirname, "dist")));
-
-
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:4200",
-  credentials: true, // Allow credentials (cookies, authorization headers)
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allowed HTTP methods
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // For debugging
+    console.log('CORS blocked for origin:', origin);
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: [
     "X-PINGOTHER",
     "Content-Type",
@@ -73,12 +61,46 @@ const corsOptions = {
     "Application-Context",
     "recaptcha",
     "Apollo-Require-Preflight",
-  ], // Allowed headers
-  optionsSuccessStatus: 204, // Response status code for successful OPTIONS request
+  ],
+  optionsSuccessStatus: 204,
+  preflightContinue: false,
+  maxAge: 600 // 10 minutes
 };
 
+// Apply CORS before other middleware
 app.use(cors(corsOptions));
 
+// Handle preflight requests
+app.options('*', cors(corsOptions));
+
+// Trust first proxy in production (important for secure cookies)
+if (process.env.NODE_ENV === "production") {
+  app.set('trust proxy', 1);
+}
+
+// Session configuration
+const sessionConfig = {
+  secret: process.env.SESSION_SECRET || "test-secret-key",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === "production", // true in production
+    sameSite: process.env.NODE_ENV === "production" ? 'None' : 'Lax',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    path: '/',
+  },
+  name: 'bookmarker.sid' // Custom session cookie name
+};
+
+app.use(cookieParser(process.env.SESSION_SECRET || "test"));
+app.use(session(sessionConfig));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Initialize bodyparser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const port = process.env.PORT || "3100";
 app.set("port", port);
@@ -86,8 +108,10 @@ app.set("port", port);
 // Create HTTP server
 const server = http.createServer(app);
 
+// Import routes
 require("./server/app")(app);
 
+// Test database connection
 app.get("/test-connection", async (req, res) => {
   try {
     const result = await db.raw("SELECT 1");
@@ -98,12 +122,13 @@ app.get("/test-connection", async (req, res) => {
   }
 });
 
-// For Build: Catch all other routes and return the index file -- BUILDING
+// For Build: Catch all other routes and return the index file
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "dist/index.html"));
 });
 
-// server.listen(port);
+// Start server
 server.listen(port, function () {
-  console.log("Running on " + app.get("port"));
+  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${port}`);
+  console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
 });

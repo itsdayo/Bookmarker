@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   password: string = '';
   errorFlag: boolean = false;
   errorMsg = 'Invaild username or password!';
+  isLoading: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -29,18 +30,24 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   login() {
+    if (this.isLoading) return;
+
+    this.isLoading = true;
+    this.errorFlag = false;
     this.username = this.loginForm?.value.username;
     this.password = this.loginForm?.value.password;
 
     this.userService.login(this.username, this.password).subscribe({
       next: (data: User) => {
-        this.sharedService.user = data; // Store the logged-in user   
+        this.sharedService.user = data; // Store the logged-in user
       },
       error: (error) => {
         console.error('Login failed:', error); // Handle error appropriately
-        alert('Login failed. Please check your credentials.'); // User feedback
+        this.errorFlag = true;
+        this.isLoading = false;
       },
       complete: () => {
+        this.isLoading = false;
         this.router.navigate(['/user']); // Navigate to the user page
       },
     });

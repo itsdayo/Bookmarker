@@ -16,6 +16,7 @@ export class RegisterComponent implements OnInit {
   verifyPassword: string = '';
   passwordError: boolean = false;
   usernameError: boolean = false;
+  isLoading: boolean = false;
   constructor(
     private userService: UserService,
     private router: Router,
@@ -28,6 +29,8 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
+    if (this.isLoading) return;
+
     this.username = this.registerForm?.value.username;
     this.password = this.registerForm?.value.password;
     this.verifyPassword = this.registerForm?.value.verifyPassword;
@@ -36,24 +39,29 @@ export class RegisterComponent implements OnInit {
       this.passwordError = true;
       this.usernameError = false;
     } else {
+      this.isLoading = true;
       this.passwordError = false;
+      this.usernameError = false;
       this.userService
         .findUserByUsername(this.username)
         .subscribe((data: any) => {
           if (!data) {
-            this.userService.register(this.username, this.password).subscribe(              
+            this.userService.register(this.username, this.password).subscribe(
               (data: User) => {
                 this.sharedService.user = data;
+                this.isLoading = false;
                 this.router.navigate(['/user']);
               },
 
               (error: any) => {
                 console.log(error.message);
                 this.usernameError = true;
+                this.isLoading = false;
               }
             );
           } else {
             this.usernameError = true;
+            this.isLoading = false;
           }
         });
     }

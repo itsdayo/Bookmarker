@@ -24,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: dayosql/bookmarker:latest
+          tags: incogniyo/bookmaker:latest
   deploy:
       needs: docker
       name: Deploy app

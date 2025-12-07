@@ -404,24 +404,50 @@ select.form-control {
 
 /* Editor Container */
 .editor-container {
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
+  /* Provides a clear boundary for the entire editor */
+  border: 1px solid #c8c8c8; /* Slightly darker border for clarity */
+  border-radius: 6px; /* Softer corners */
   overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle lift */
+  transition: border-color 0.3s;
+  min-height: 200px;
+}
+
+.editor-container:focus-within {
+  /* Highlight container when the editor is active */
+  border-color: #007bff; /* E.g., a blue focus color */
 }
 
 .editor-container .ql-toolbar {
-  border-bottom: 2px solid #e0e0e0;
-  background: #f8f9fa;
+  /* Separator for the toolbar */
+  border: none; /* Remove border around toolbar */
+  border-bottom: 1px solid #e0e0e0;
+  background: #f4f4f4; /* Lighter background for toolbar */
+  padding: 8px 10px;
 }
 
 .editor-container .ql-container {
+  /* Container for the editing area */
   border: none;
   min-height: 200px;
+  background-color: #ffffff;
 }
 
 .editor-container .ql-editor {
+  /* The actual editing area */
   min-height: 200px;
-  font-size: 14px;
+  font-size: 16px; /* Slightly larger font size for better readability */
+  line-height: 1.6;
+  padding: 15px; /* Better internal padding */
+  color: #333;
+}
+
+/* Style for when the editor is disabled */
+.editor-container quill-editor[disabled] .ql-toolbar,
+.editor-container quill-editor[disabled] .ql-container {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #fafafa;
 }
 
 /* Search Section */

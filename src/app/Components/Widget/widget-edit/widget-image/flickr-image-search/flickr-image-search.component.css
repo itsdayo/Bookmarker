@@ -432,7 +432,7 @@ select.form-control {
 }
 
 .section-header {
-  background: white;
+  background: black;
   border-radius: 15px;
   padding: 20px;
   margin-bottom: 20px;
@@ -451,7 +451,7 @@ select.form-control {
 
 .section-header p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   font-size: 14px;
 }
 
@@ -534,7 +534,7 @@ select.form-control {
 .no-results-content h3 {
   margin: 0 0 10px 0;
   font-size: 20px;
-  color: white;
+  color: black;
 }
 
 .no-results-content p {
@@ -553,13 +553,14 @@ select.form-control {
 }
 
 .initial-state-content {
-  color: #666;
+  color: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
 }
 
 .initial-state-content p {
   margin: 0;
   font-size: 16px;
   line-height: 1.5;
+  color: black;
 }
 
 /* Floating Action Button */

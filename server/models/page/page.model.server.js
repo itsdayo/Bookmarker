@@ -35,6 +35,12 @@ const PageModel = {
       .del()
       .catch((err) => console.log(err));
   },
+  async deletePageByWebsiteId(wid) {
+    return db("pages")
+      .where("websiteId", wid)
+      .del()
+      .catch((err) => console.log(err));
+  },
 };
 
 module.exports = PageModel;

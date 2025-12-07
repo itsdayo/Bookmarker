@@ -38,6 +38,13 @@ const WidgetModel = {
       .del()
       .catch((err) => console.log(err));
   },
+
+  async deleteWidgetsByPageId(pid) {
+    return db("widgets")
+      .where("pageId", pid)
+      .del()
+      .catch((err) => console.log(err));
+  },
 };
 
 module.exports = WidgetModel;

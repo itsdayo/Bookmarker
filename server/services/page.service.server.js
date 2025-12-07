@@ -1,5 +1,6 @@
 module.exports = function (app) {
   const pageModel = require("../models/page/page.model.server.js");
+  const widgetModel = require("../models/widget/widget.model.server.js");
 
   app.post("/api/website/:wid/page", createPage);
   app.get("/api/website/:wid/page", findAllPagesForWebsite);
@@ -48,6 +49,7 @@ module.exports = function (app) {
 
   function deletePage(req, res) {
     let pid = req.params["pid"];
+    widgetModel.deleteWidgetsByPageId(pid);
     pageModel.deletePage(pid).then((data) => {
       res.json(data);
     });

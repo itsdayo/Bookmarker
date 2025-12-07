@@ -1,68 +1,134 @@
-<nav class="row navbar navbar-dark fixed-top do-gray">
-  <div class="container-fluid">
-    <div>
-      <a
-        class="do-black float-left"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page"
-        ><i class="fas fa-chevron-left"></i
-      ></a>
-      <a
-        class="container-fluid do-no-underline do-font-white"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/new"
-        ><b>New Page</b></a
-      >
+<div class="page-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <a class="back-btn" routerLink="/user/{{ uid }}/website/{{ wid }}/page">
+          <i class="fas fa-chevron-left"></i>
+        </a>
+        <h1 class="page-title">New Page</h1>
+      </div>
+      <div class="header-right">
+        <a
+          class="add-btn"
+          routerLink="/user/{{ uid }}/website/{{ wid }}/page/new"
+        >
+          <i class="fas fa-plus"></i>
+        </a>
+      </div>
     </div>
-    <button
-      [disabled]="f.invalid"
-      type="submit"
-      form="pageForm"
-      class="do-button do-black float-right"
-    >
-      <i class="fas fa-check"></i>
-    </button>
   </div>
-</nav>
 
-<div class="container-fluid">
-  <form (ngSubmit)="create()" id="pageForm" #f="ngForm">
-    <div class="alert alert-danger" *ngIf="name.invalid && name.touched">
-      Please enter a Name!
-    </div>
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input
-        type="text"
-        name="name"
-        placeholder="Enter your page name here"
-        class="form-control"
-        required
-        ngModel
-        #name="ngModel"
-      />
-    </div>
-    <label for="description">Description</label>
-    <input
-      type="text"
-      name="description"
-      placeholder="Enter your page description here"
-      class="form-control"
-      ngModel
-      #description="ngModel"
-    />
-    <button
-      type="submit"
-      [disabled]="f.invalid"
-      class="btn do-margin btn-success float-right"
-    >
-      Submit
-    </button>
-  </form>
-</div>
+  <!-- Main Content -->
+  <div class="page-content">
+    <div class="content-wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h3><i class="fas fa-file-alt"></i> Pages</h3>
+        </div>
+        <div class="page-list">
+          <div class="page-item" *ngFor="let page of pages">
+            <a
+              class="page-link"
+              routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+                page.id
+              }}/widget"
+            >
+              <i class="fas fa-file-alt"></i>
+              <span>{{ page.name }}</span>
+            </a>
+            <a
+              class="settings-btn"
+              routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ page.id }}"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+          </div>
+        </div>
+      </div>
 
-<nav class="navbar navbar-dark do-gray fixed-bottom">
-  <div class="do-width">
-    <a routerLink="/user/{{ uid }}" class="do-margin-right float-right">
+      <!-- Form Section -->
+      <div class="form-section">
+        <div class="form-card">
+          <div class="card-header">
+            <h2><i class="fas fa-plus-circle"></i> Create New Page</h2>
+            <button
+              class="save-btn"
+              type="submit"
+              form="pageForm"
+              [disabled]="f.invalid || isLoading"
+            >
+              <i class="fas fa-check"></i>
+              <span *ngIf="!isLoading">Save</span>
+              <span *ngIf="isLoading">Saving...</span>
+            </button>
+          </div>
+
+          <div class="card-body">
+            <form id="pageForm" (ngSubmit)="create()" #f="ngForm">
+              <!-- Alert -->
+              <div
+                class="alert alert-danger"
+                *ngIf="name.invalid && name.touched"
+              >
+                <i class="fas fa-exclamation-triangle"></i>
+                Please enter a Page Name!
+              </div>
+
+              <!-- Page Name -->
+              <div class="form-group">
+                <label for="name" class="form-label">
+                  <i class="fas fa-tag"></i> Page Name
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Enter your page name"
+                  required
+                  ngModel
+                  #name="ngModel"
+                  [disabled]="isLoading"
+                  [ngClass]="{ 'is-invalid': name.invalid && name.touched }"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="name.invalid && name.touched"
+                >
+                  Page name is required
+                </div>
+              </div>
+
+              <!-- Page Description -->
+              <div class="form-group">
+                <label for="description" class="form-label">
+                  <i class="fas fa-align-left"></i> Page Description
+                </label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  name="description"
+                  rows="4"
+                  placeholder="Describe your page..."
+                  ngModel
+                  #description="ngModel"
+                  [disabled]="isLoading"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a class="nav-link" routerLink="/user">
       <i class="fas fa-user"></i>
+      <span>Profile</span>
     </a>
   </div>
-</nav>
+</div>

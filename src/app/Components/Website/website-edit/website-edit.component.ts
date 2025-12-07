@@ -21,6 +21,7 @@ export class WebsiteEditComponent implements OnInit {
   wid: string = '';
   name: string = '';
   description: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -58,6 +59,7 @@ export class WebsiteEditComponent implements OnInit {
   }
 
   update() {
+    this.isLoading = true;
     this.name = this.websiteForm?.value.name;
     this.description = this.websiteForm?.value.description;
 
@@ -70,6 +72,7 @@ export class WebsiteEditComponent implements OnInit {
     this.websiteService
       .updateWebsite(this.wid, newWebsite)
       .subscribe((website: Website) => {
+        this.isLoading = false;
         this.router.navigate(['/user/', this.uid, 'website']);
       });
   }

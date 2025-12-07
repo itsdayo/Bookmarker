@@ -11,7 +11,7 @@ import { PageService } from '../../../services/page.service.client';
 export class PageListComponent implements OnInit {
   uid: string = '';
   wid: string = '';
-  pages: Page[] | undefined;
+  pages: Page[] = [];
   constructor(
     private pageService: PageService,
     private activatedRoute: ActivatedRoute

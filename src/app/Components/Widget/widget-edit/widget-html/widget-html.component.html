@@ -1,66 +1,75 @@
-<nav class="row navbar navbar-dark fixed-top do-gray">
-  <div class="container-fluid">
-    <div>
-      <a
-        class="do-black float-left"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
-        ><i class="fas fa-chevron-left"></i
-      ></a>
-      <a
-        class="container-fluid do-no-underline do-font-white"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-          pid
-        }}/widget/wgid"
-        ><b>Widget Edit</b></a
-      >
+<div class="widget-container">
+  <!-- Main Content -->
+  <div class="widget-content">
+    <div class="content-wrapper">
+      <!-- Form Section -->
+      <div class="form-section">
+        <div class="form-card">
+          <div class="card-header">
+            <h2><i class="fas fa-code"></i> HTML Widget Settings</h2>
+          </div>
+
+          <div class="card-body">
+            <form id="widgetForm" (ngSubmit)="update()" #f="ngForm">
+              <!-- Widget Name -->
+              <div class="form-group">
+                <label for="name" class="form-label">
+                  <i class="fas fa-tag"></i> Widget Name
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Enter a widget name..."
+                  [ngModel]="widget.name"
+                  #name="ngModel"
+                  [disabled]="isLoading"
+                />
+              </div>
+
+              <!-- HTML Content -->
+              <div class="form-group">
+                <label for="text" class="form-label">
+                  <i class="fas fa-code"></i> HTML Content
+                </label>
+                <div class="editor-container">
+                  <quill-editor
+                    name="text"
+                    [ngModel]="widget.text"
+                    #text="ngModel"
+                    [disabled]="isLoading"
+                    placeholder="Enter HTML content..."
+                  ></quill-editor>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="save-btn"
+                  [disabled]="f.invalid || isLoading"
+                >
+                  <i class="fas fa-save"></i>
+                  <span *ngIf="!isLoading">Save Changes</span>
+                  <span *ngIf="isLoading">Saving...</span>
+                </button>
+                <button
+                  type="button"
+                  class="delete-btn"
+                  (click)="delete()"
+                  [disabled]="isLoading"
+                  *ngIf="widget.text"
+                >
+                  <i class="fas fa-trash"></i>
+                  Delete Widget
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <button
-      [disabled]="f.invalid"
-      type="submit"
-      form="widgetForm"
-      routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
-      class="do-button do-black float-right"
-    >
-      <i class="fas fa-check"></i>
-    </button>
   </div>
-</nav>
-
-<form (ngSubmit)="update()" #f="ngForm" id="widgetForm" class="container-fluid">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input
-      ngModel="{{ widget.name }}"
-      #name="ngModel"
-      type="text"
-      name="name"
-      class="form-control"
-      placeholder="Enter a widget name..."
-    />
-  </div>
-  <div class="form-group">
-    <label for="text">Text</label>
-    <quill-editor
-      name="text"
-      ngModel="{{ widget.text }}"
-      #text="ngModel"
-    ></quill-editor>
-  </div>
-
-  <button
-    type="submit"
-    [disabled]="f.invalid"
-    class="btn btn-block btn-primary"
-  >
-    Submit
-  </button>
-  <button type="button" class="btn btn-block btn-danger" (click)="delete()">
-    Delete
-  </button>
-</form>
-
-<nav class="navbar navbar-dark do-gray fixed-bottom">
-  <div class="do-width">
-    <a routerLink="/user" class="float-right"> <i class="fas fa-user"></i> </a>
-  </div>
-</nav>
+</div>

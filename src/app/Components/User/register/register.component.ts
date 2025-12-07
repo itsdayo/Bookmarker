@@ -17,6 +17,8 @@ export class RegisterComponent implements OnInit {
   passwordError: boolean = false;
   usernameError: boolean = false;
   isLoading: boolean = false;
+  showPassword: boolean = false;
+  showVerifyPassword: boolean = false;
   constructor(
     private userService: UserService,
     private router: Router,
@@ -26,6 +28,28 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.passwordError = false;
     this.usernameError = false;
+  }
+
+  togglePasswordVisibility(field: string) {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+      const passwordInput = document.getElementById(
+        'password'
+      ) as HTMLInputElement;
+      if (passwordInput) {
+        passwordInput.type = this.showPassword ? 'text' : 'password';
+      }
+    } else if (field === 'verifyPassword') {
+      this.showVerifyPassword = !this.showVerifyPassword;
+      const verifyPasswordInput = document.getElementById(
+        'verifyPassword'
+      ) as HTMLInputElement;
+      if (verifyPasswordInput) {
+        verifyPasswordInput.type = this.showVerifyPassword
+          ? 'text'
+          : 'password';
+      }
+    }
   }
 
   register() {

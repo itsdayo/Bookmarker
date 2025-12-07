@@ -19,7 +19,8 @@ export class PageEditComponent implements OnInit {
   };
   name: string = '';
   description: string = '';
-  pages: Page[] | undefined;
+  pages: Page[] = [];
+  isLoading: boolean = false;
 
   @ViewChild('f') pageForm?: NgForm;
   constructor(
@@ -36,6 +37,11 @@ export class PageEditComponent implements OnInit {
       this.pageService.findPageById(this.pid).subscribe((page: Page) => {
         this.page = page;
       });
+      this.pageService
+        .findPageByWebsiteId(this.wid)
+        .subscribe((pages: Page[]) => {
+          this.pages = pages;
+        });
     });
   }
 
@@ -45,14 +51,17 @@ export class PageEditComponent implements OnInit {
     });
   }
   update() {
+    this.isLoading = true;
     this.name = this.pageForm?.value.name;
     this.description = this.pageForm?.value.description;
     const newPage: Page = {
+      id: this.pid,
       name: this.name,
       websiteId: this.wid,
       description: this.description,
     };
     this.pageService.updatePage(this.pid, newPage).subscribe((page: Page) => {
+      this.isLoading = false;
       this.router.navigate(['/user', this.uid, 'website', this.wid, 'page']);
     });
   }

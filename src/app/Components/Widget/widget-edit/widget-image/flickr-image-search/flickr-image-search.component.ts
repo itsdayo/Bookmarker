@@ -17,6 +17,7 @@ export class FlickrImageSearchComponent implements OnInit {
   searchText: string = '';
   photos: any[] = [];
   widget?: Widget;
+  isLoading: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -41,27 +42,32 @@ export class FlickrImageSearchComponent implements OnInit {
   }
 
   searchPhoto() {
+    this.isLoading = true;
     this.flickrService.searchPhotos(this.searchText).subscribe((data: any) => {
       let val = data._body;
       val = val.replace('jsonFlickrApi(', '');
       val = val.substring(0, val.length - 1);
       val = JSON.parse(val);
       this.photos = val.photos.photo;
+      this.isLoading = false;
     });
   }
 
-  selectPhoto(photo:any) {
+  getPhotoUrl(pic: any): string {
+    return `https://farm${pic.farm}.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_s.jpg`;
+  }
+
+  selectPhoto(photo: any) {
     let url = 'https://farm' + photo.farm + '.staticflickr.com/' + photo.server;
     url += '/' + photo.id + '_' + photo.secret + '_b.jpg';
 
-	
     this.widget!.url = url;
 
     this.widgetService
-      .updateWidget(this.wgid, this.widget ?? {} as Widget)
+      .updateWidget(this.wgid, this.widget ?? ({} as Widget))
       .subscribe((widget: Widget) => {
         this.router.navigate([
-          'user',
+          '/user',
           this.uid,
           'website',
           this.wid,

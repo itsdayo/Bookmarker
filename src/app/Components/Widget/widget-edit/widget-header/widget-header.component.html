@@ -1,97 +1,131 @@
-<nav class="row navbar navbar-dark fixed-top do-gray">
-  <div class="container-fluid">
-    <div>
-      <a
-        class="do-black float-left"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
-        ><i class="fas fa-chevron-left"></i
-      ></a>
-      <a
-        class="container-fluid do-no-underline do-font-white"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-          pid
-        }}/widget/wgid"
-        ><b>Widget Edit</b></a
-      >
+<div class="widget-container">
+  <!-- Main Content -->
+  <div class="widget-content">
+    <div class="content-wrapper">
+      <!-- Form Section -->
+      <div class="form-section">
+        <div class="form-card">
+          <div class="card-header">
+            <h2><i class="fas fa-heading"></i> Header Widget Settings</h2>
+          </div>
+
+          <div class="card-body">
+            <form id="widgetForm" (ngSubmit)="update()" #f="ngForm">
+              <!-- Alerts -->
+              <div
+                class="alert alert-danger"
+                *ngIf="text.invalid && text.touched"
+              >
+                <i class="fas fa-exclamation-triangle"></i>
+                Please enter text for the widget!
+              </div>
+              <div
+                class="alert alert-danger"
+                *ngIf="size.invalid && size.touched"
+              >
+                <i class="fas fa-exclamation-triangle"></i>
+                Please enter a size!
+              </div>
+
+              <!-- Widget Name -->
+              <div class="form-group">
+                <label for="name" class="form-label">
+                  <i class="fas fa-tag"></i> Widget Name
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Enter a widget name..."
+                  [ngModel]="widget.name"
+                  #name="ngModel"
+                  [disabled]="isLoading"
+                />
+              </div>
+
+              <!-- Header Text -->
+              <div class="form-group">
+                <label for="text" class="form-label">
+                  <i class="fas fa-heading"></i> Header Text
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="text"
+                  id="text"
+                  placeholder="Enter header text..."
+                  required
+                  [ngModel]="widget.text"
+                  #text="ngModel"
+                  [disabled]="isLoading"
+                  [ngClass]="{ 'is-invalid': text.invalid && text.touched }"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="text.invalid && text.touched"
+                >
+                  Header text is required
+                </div>
+              </div>
+
+              <!-- Header Size -->
+              <div class="form-group">
+                <label for="size" class="form-label">
+                  <i class="fas fa-text-height"></i> Header Size
+                </label>
+                <select
+                  class="form-control"
+                  name="size"
+                  id="size"
+                  required
+                  [ngModel]="widget.size"
+                  #size="ngModel"
+                  [disabled]="isLoading"
+                  [ngClass]="{ 'is-invalid': size.invalid && size.touched }"
+                >
+                  <option value="">Select size...</option>
+                  <option value="1">Heading 1 (Smallest)</option>
+                  <option value="2">Heading 2</option>
+                  <option value="3">Heading 3</option>
+                  <option value="4">Heading 4</option>
+                  <option value="5">Heading 5</option>
+                  <option value="6">Heading 6 (Largest)</option>
+                </select>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="size.invalid && size.touched"
+                >
+                  Header size is required
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="save-btn"
+                  [disabled]="f.invalid || isLoading"
+                >
+                  <i class="fas fa-save"></i>
+                  <span *ngIf="!isLoading">Save Changes</span>
+                  <span *ngIf="isLoading">Saving...</span>
+                </button>
+                <button
+                  type="button"
+                  class="delete-btn"
+                  (click)="delete()"
+                  [disabled]="isLoading"
+                  *ngIf="widget.text"
+                >
+                  <i class="fas fa-trash"></i>
+                  Delete Widget
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <button
-      [disabled]="f.invalid"
-      type="submit"
-      form="widgetForm"
-      class="do-button do-black float-right"
-    >
-      <i class="fas fa-check"></i>
-    </button>
   </div>
-</nav>
-
-<form class="container-fluid" (ngSubmit)="update()" #f="ngForm" id="widgetForm">
-  <div class="alert alert-danger" *ngIf="text.invalid && text.touched">
-    Please enter text for the widget!
-  </div>
-  <div class="alert alert-danger" *ngIf="size.invalid && size.touched">
-    Please enter a size!
-  </div>
-  <div class="alert alert-danger" *ngIf="size.invalid && size.touched">
-    Please enter a size!
-  </div>
-
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input
-      ngModel="{{ widget.name }}"
-      #name="ngModel"
-      type="text"
-      name="name"
-      class="form-control"
-      placeholder="Enter a widget name..."
-    />
-  </div>
-  <div class="form-group">
-    <label for="text">Text</label>
-    <input
-      ngModel="{{ widget.text }}"
-      #text="ngModel"
-      type="text"
-      name="text"
-      class="form-control"
-      required
-      placeholder="Enter a widget text..."
-    />
-  </div>
-  <div class="form-group">
-    <label for="size">Size</label>
-    <select
-      ngModel="{{ widget.size }}"
-      #size="ngModel"
-      type="number"
-      name="size"
-      class="form-control"
-      required
-      placeholder="Enter a widget size..."
-    >
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-    </select>
-  </div>
-  <button
-    [disabled]="f.invalid"
-    type="submit"
-    class="btn btn-block btn-primary"
-  >
-    Submit
-  </button>
-  <button type="button" (click)="delete()" class="btn btn-block btn-danger">
-    Delete
-  </button>
-</form>
-
-<nav class="navbar navbar-dark do-gray fixed-bottom">
-  <div class="do-width">
-    <a routerLink="/user" class="float-right"> <i class="fas fa-user"></i> </a>
-  </div>
-</nav>
+</div>

@@ -22,6 +22,7 @@ export class WidgetHeaderComponent implements OnInit {
   width?: string;
   url?: string;
   name?: string;
+  isLoading: boolean = false;
   widget: Widget = {
     widgetType: '',
     pageId: '',
@@ -50,6 +51,8 @@ export class WidgetHeaderComponent implements OnInit {
   }
 
   update() {
+    console.log('Updating widget:', this.widgetForm?.value);
+    this.isLoading = true;
     this.name = this.widgetForm?.value.name;
     this.size = this.widgetForm?.value.size;
     this.text = this.widgetForm?.value.text;
@@ -66,6 +69,7 @@ export class WidgetHeaderComponent implements OnInit {
     this.widgetService
       .updateWidget(this.wgid, updateWidget)
       .subscribe((widget: Widget) => {
+        this.isLoading = false;
         this.router.navigate([
           '/user',
           this.uid,

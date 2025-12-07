@@ -1,101 +1,134 @@
-<nav class="row navbar navbar-dark fixed-top do-gray">
-  <div class="container-fluid">
-    <div>
-      <a
-        class="do-black float-left"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
-        ><i class="fas fa-chevron-left"></i
-      ></a>
-      <a
-        class="container-fluid do-no-underline do-font-white"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-          pid
-        }}/widget/wgid"
-        ><b>Widget Edit</b></a
-      >
-    </div>
-    <button
-      [disabled]="f.invalid"
-      type="submit"
-      form="widgetForm"
-      routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
-      class="do-button do-black float-right"
-    >
-      <i class="fas fa-check"></i>
-    </button>
-  </div>
-</nav>
+<div class="widget-container">
+  <!-- Main Content -->
+  <div class="widget-content">
+    <div class="content-wrapper">
+      <!-- Form Section -->
+      <div class="form-section">
+        <div class="form-card">
+          <div class="card-header">
+            <h2><i class="fas fa-play"></i> YouTube Widget Settings</h2>
+          </div>
 
-<form (ngSubmit)="update()" #f="ngForm" id="widgetForm" class="container-fluid">
-  <div class="alert alert-danger" *ngIf="url.invalid && url.touched">
-    Please enter a url!
-  </div>
-  <div class="alert alert-danger" *ngIf="width.invalid && width.touched">
-    Please enter a width!
-  </div>
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input
-      ngModel="{{ widget.name }}"
-      #name="ngModel"
-      type="text"
-      name="name"
-      class="form-control"
-      placeholder="Enter a widget name..."
-    />
-  </div>
-  <div class="form-group">
-    <label for="text">Text</label>
-    <input
-      ngModel="{{ widget.text }}"
-      #text="ngModel"
-      type="text"
-      name="text"
-      class="form-control"
-      placeholder="Enter a widget text..."
-    />
-  </div>
-  <div class="form-group">
-    <label for="url">URL</label>
-    <input
-      ngModel="{{ widget.url }}"
-      #url="ngModel"
-      required
-      type="text"
-      name="url"
-      class="form-control"
-      placeholder="https://www.youtube.com"
-    />
-    <div style="color: red; font-size: small">
-      *Url must be the share youtube link*
+          <div class="card-body">
+            <form id="widgetForm" (ngSubmit)="update()" #f="ngForm">
+              <!-- Alerts -->
+              <div
+                class="alert alert-danger"
+                *ngIf="url.invalid && url.touched"
+              >
+                <i class="fas fa-exclamation-triangle"></i>
+                Please enter a URL!
+              </div>
+              <div
+                class="alert alert-danger"
+                *ngIf="width.invalid && width.touched"
+              >
+                <i class="fas fa-exclamation-triangle"></i>
+                Please enter a width!
+              </div>
+
+              <!-- Widget Name -->
+              <div class="form-group">
+                <label for="name" class="form-label">
+                  <i class="fas fa-tag"></i> Widget Name
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Enter a widget name..."
+                  [ngModel]="widget.name"
+                  #name="ngModel"
+                  [disabled]="isLoading"
+                />
+              </div>
+
+              <!-- Widget Text/Title -->
+              <div class="form-group">
+                <label for="text" class="form-label">
+                  <i class="fas fa-info-circle"></i> Video Title
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="text"
+                  id="text"
+                  placeholder="Enter video title..."
+                  [ngModel]="widget.text"
+                  #text="ngModel"
+                  [disabled]="isLoading"
+                />
+              </div>
+
+              <!-- YouTube URL -->
+              <div class="form-group">
+                <label for="url" class="form-label">
+                  <i class="fas fa-link"></i> YouTube URL
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="url"
+                  id="url"
+                  placeholder="https://www.youtube.com"
+                  required
+                  [ngModel]="widget.url"
+                  #url="ngModel"
+                  [disabled]="isLoading"
+                  [ngClass]="{ 'is-invalid': url.invalid && url.touched }"
+                />
+                <small class="form-text text-muted">
+                  <i class="fas fa-info-circle"></i>
+                  URL must be the share YouTube link
+                </small>
+              </div>
+
+              <!-- Video Width -->
+              <div class="form-group">
+                <label for="width" class="form-label">
+                  <i class="fas fa-arrows-alt-h"></i> Video Width
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="width"
+                  id="width"
+                  placeholder="100%"
+                  required
+                  [ngModel]="widget.width"
+                  #width="ngModel"
+                  [disabled]="isLoading"
+                  [ngClass]="{ 'is-invalid': width.invalid && width.touched }"
+                />
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="save-btn"
+                  [disabled]="f.invalid || isLoading"
+                >
+                  <i class="fas fa-save"></i>
+                  <span *ngIf="!isLoading">Save Changes</span>
+                  <span *ngIf="isLoading">Saving...</span>
+                </button>
+                <button
+                  type="button"
+                  class="delete-btn"
+                  (click)="delete()"
+                  [disabled]="isLoading"
+                  *ngIf="widget.url"
+                >
+                  <i class="fas fa-trash"></i>
+                  Delete Widget
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="form-group">
-    <label for="width">Width</label>
-    <input
-      ngModel="{{ widget.width }}"
-      #width="ngModel"
-      required
-      type="text"
-      name="width"
-      class="form-control"
-      placeholder="100%"
-    />
-  </div>
-  <button
-    type="submit"
-    [disabled]="f.invalid"
-    class="btn btn-block btn-primary"
-  >
-    Submit
-  </button>
-  <button type="button" class="btn btn-block btn-danger" (click)="delete()">
-    Delete
-  </button>
-</form>
-
-<nav class="navbar navbar-dark do-gray fixed-bottom">
-  <div class="do-width">
-    <a routerLink="/user" class="float-right"> <i class="fas fa-user"></i> </a>
-  </div>
-</nav>
+</div>

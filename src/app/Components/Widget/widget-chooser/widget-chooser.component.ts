@@ -12,6 +12,7 @@ export class WidgetChooserComponent implements OnInit {
   uid: string = '';
   wid: string = '';
   pid: string = '';
+  activeCategory: string = 'all';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -26,12 +27,24 @@ export class WidgetChooserComponent implements OnInit {
       this.pid = params['pid'];
     });
   }
+
+  filterCategory(category: string) {
+    this.activeCategory = category;
+    // You can implement filtering logic here if needed
+    console.log('Filtering by category:', category);
+  }
+
+  getAvailableWidgetsCount(): number {
+    // Return the count of available widgets (excluding coming soon)
+    return 5; // HEADING, TEXT, HTML, IMAGE, YOUTUBE
+  }
+
   create(type: any) {
     const newWidget: Widget = {
       widgetType: type,
       pageId: this.pid,
     };
-
+   
     this.widgetService
       .createWidget(this.pid, newWidget)
       .subscribe((widget: Widget) => {

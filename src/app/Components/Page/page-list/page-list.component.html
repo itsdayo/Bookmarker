@@ -1,46 +1,112 @@
-<nav class="row navbar navbar-dark fixed-top do-gray">
-  <div class="container-fluid">
-    <div>
-      <a class="do-black float-left" routerLink="/user/{{ uid }}/website"
-        ><i class="fas fa-chevron-left"></i
-      ></a>
-      <a
-        class="container-fluid do-no-underline do-font-white"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page"
-        ><b>Pages</b></a
-      >
+<div class="page-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <a class="back-btn" routerLink="/user/{{ uid }}/website">
+          <i class="fas fa-chevron-left"></i>
+        </a>
+        <h1 class="page-title">Pages</h1>
+      </div>
+      <div class="header-right">
+        <a
+          class="add-btn"
+          routerLink="/user/{{ uid }}/website/{{ wid }}/page/new"
+        >
+          <i class="fas fa-plus"></i>
+        </a>
+      </div>
     </div>
-    <a
-      routerLink="/user/{{ uid }}/website/{{ wid }}/page/new"
-      class="do-margin-right do-black float-right"
-      ><i class="fas fa-plus"></i
-    ></a>
   </div>
-</nav>
 
-<div class="container-fluid">
-  <ul class="list-group">
-    <li *ngFor="let page of pages" class="list-group-item do-hover">
-      <a
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-          page.id
-        }}/widget"
-        >{{ page.name }}</a
-      >
-      <a
-        class="float-right"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ page.id }}"
-      >
-        <i class="fas fa-cog"></i
-      ></a>
-    </li>
-  </ul>
-</div>
+  <!-- Main Content -->
+  <div class="page-content">
+    <div class="content-wrapper">
+      <!-- Pages Section -->
+      <div class="pages-section">
+        <div class="section-header">
+          <h2><i class="fas fa-file-alt"></i> Website Pages</h2>
+          <p>Manage and organize your website pages</p>
+        </div>
 
-<nav class="navbar navbar-dark do-gray fixed-bottom">
-  <div class="do-width">
-    <a routerLink="/user" class="do-margin-right float-right">
+        <!-- Pages Grid -->
+        <div class="pages-grid" *ngIf="pages.length > 0; else noPages">
+          <div class="page-card" *ngFor="let page of pages">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fas fa-file-alt" style="color: white"></i>
+                <h3>{{ page.name }}</h3>
+              </div>
+              <div class="card-actions">
+                <a
+                  class="edit-btn"
+                  routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+                    page.id
+                  }}"
+                  title="Edit Page"
+                >
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a
+                  class="view-btn"
+                  routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+                    page.id
+                  }}/widget"
+                  title="View Widgets"
+                >
+                  <i class="fas fa-eye"></i>
+                </a>
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="page-description">
+                {{ page.description || "No description available" }}
+              </p>
+              <div class="page-meta">
+                <span class="meta-item">
+                  <i class="fas fa-file-alt"></i>
+                  Page ID: {{ page.id || "N/A" }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Pages Template -->
+        <ng-template #noPages>
+          <div class="no-pages">
+            <div class="no-pages-content">
+              <i class="fas fa-file-alt"></i>
+              <h3>No Pages Yet</h3>
+              <p>Start by creating your first page for this website</p>
+              <a
+                class="add-page-btn"
+                routerLink="/user/{{ uid }}/website/{{ wid }}/page/new"
+              >
+                <i class="fas fa-plus"></i>
+                Create First Page
+              </a>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <a
+    class="fab"
+    routerLink="/user/{{ uid }}/website/{{ wid }}/page/new"
+    title="Add New Page"
+  >
+    <i class="fas fa-plus"></i>
+  </a>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a class="nav-link" routerLink="/user">
       <i class="fas fa-user"></i>
+      <span>Profile</span>
     </a>
   </div>
-</nav>
+</div>

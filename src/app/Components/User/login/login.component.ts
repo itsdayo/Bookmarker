@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   errorFlag: boolean = false;
   errorMsg = 'Invaild username or password!';
   isLoading: boolean = false;
+  showPassword: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -28,6 +29,16 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+    const passwordInput = document.getElementById(
+      'password'
+    ) as HTMLInputElement;
+    if (passwordInput) {
+      passwordInput.type = this.showPassword ? 'text' : 'password';
+    }
+  }
 
   login() {
     if (this.isLoading) return;

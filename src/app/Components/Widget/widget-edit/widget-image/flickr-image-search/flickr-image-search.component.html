@@ -1,34 +1,122 @@
-<nav class=" row navbar navbar-dark fixed-top do-gray">
-		
-		<div class="container-fluid">
-		<div>
-		<a class="do-font-white float-left" routerLink='/user/{{uid}}/website/{{wid}}/page/{{pid}}/widget/{{wgid}}'><i class="fas fa-chevron-left"></i></a>
-		<a class="container-fluid do-no-underline do-font-white" routerLink='/user/{{uid}}/website/{{wid}}/page/{{pid}}/widget/{{wgid}}/flickr'><b>Search Flickr</b></a>
-		</div>
-		
-	</div>	
-</nav>
+<div class="widget-container">
+  <!-- Header -->
+  <div class="widget-header">
+    <div class="header-content">
+      <div class="header-left">
+        <a
+          class="back-btn"
+          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/{{
+            wgid
+          }}"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </a>
+        <h1 class="page-title">Search Flickr</h1>
+      </div>
+      <div class="header-right">
+        <button
+          class="search-btn"
+          (click)="searchPhoto()"
+          [disabled]="!searchText || isLoading"
+        >
+          <i class="fas fa-search"></i>
+          <span *ngIf="!isLoading">Search</span>
+          <span *ngIf="isLoading">Searching...</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
+  <!-- Main Content -->
+  <div class="widget-content">
+    <div class="content-wrapper">
+      <!-- Search Section -->
+      <div class="search-section">
+        <div class="form-card">
+          <div class="card-header">
+            <h2><i class="fab fa-flickr"></i> Flickr Image Search</h2>
+          </div>
+          <div class="card-body">
+            <div class="search-input-group">
+              <div class="input-group">
+                <input
+                  [(ngModel)]="searchText"
+                  type="text"
+                  class="form-control"
+                  name="flickr"
+                  placeholder="Search for images..."
+                  [disabled]="isLoading"
+                  (keyup.enter)="searchPhoto()"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="search-btn"
+                    type="button"
+                    (click)="searchPhoto()"
+                    [disabled]="!searchText || isLoading"
+                  >
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div class="input-group">
+      <!-- Results Section -->
+      <div class="results-section" *ngIf="photos.length > 0">
+        <div class="section-header">
+          <h2><i class="fas fa-images"></i> Search Results</h2>
+          <p>{{ photos.length }} images found</p>
+        </div>
 
- <input [(ngModel)]="searchText" type="text" class="form-control" name='flickr'>
+        <div class="photos-grid">
+          <div class="photo-item" *ngFor="let pic of photos">
+            <div class="photo-card" (click)="selectPhoto(pic)">
+              <img
+                [src]="getPhotoUrl(pic)"
+                [alt]="'Flickr image ' + pic.id"
+                class="photo-thumbnail"
+              />
+              <div class="photo-overlay">
+                <i class="fas fa-check-circle"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
- <span class="input-group-btn">
+      <!-- No Results -->
+      <div
+        class="no-results"
+        *ngIf="searchText && photos.length === 0 && !isLoading"
+      >
+        <div class="no-results-content">
+          <i class="fas fa-search"></i>
+          <h3>No Images Found</h3>
+          <p>Try searching with different keywords</p>
+        </div>
+      </div>
 
-         <button (click)="searchPhoto()" class="btn btn-dark" type="button">Search</button>
+      <!-- Initial State -->
+      <div class="initial-state" *ngIf="!searchText && photos.length === 0">
+        <div class="initial-state-content">
+          <div class="flickr-icon">
+            <i class="fab fa-flickr"></i>
+          </div>
+          <h3>Search Flickr Images</h3>
+          <p>Enter keywords above to search for beautiful images from Flickr</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
- </span>
-
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a class="nav-link" routerLink="/user">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </div>
 </div>
-<div class="row">
-	<div *ngFor="let pic of photos">
-		<img (click)='selectPhoto(pic)' width="100%" [src]="['https://farm' + pic.farm + '.staticflickr.com/' + pic.server + '/' +   pic.id + '_' + pic.secret + '_s.jpg']"/> 
-	</div>
-</div>
-<nav class="navbar navbar-dark do-gray fixed-bottom">
-	<div class="do-width">
-		<a routerLink='/user/{{uid}}' class="float-right">
-			<i class="fas fa-user"></i> </a> 
-	</div>
-</nav>

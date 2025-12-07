@@ -1,9 +1,38 @@
-<div  [ngSwitch]='widget.widgetType'>
-	<div *ngSwitchCase="'HEADING'"><app-widget-header></app-widget-header></div>
-	<div *ngSwitchCase="'IMAGE'"><app-widget-image></app-widget-image></div>
-	<div *ngSwitchCase="'YOUTUBE'"><app-widget-youtube></app-widget-youtube></div>
-	<div *ngSwitchCase="'HTML'"><app-widget-html></app-widget-html>
-	</div>
-	<div *ngSwitchCase="'TEXT'"><app-widget-text></app-widget-text>
-	</div>
+<div class="widget-container">
+  <!-- Header -->
+  <div class="widget-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-btn" type="button" (click)="navigateBack($event)">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <h1 class="page-title">Edit Widget</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="widget-content">
+    <div class="content-wrapper">
+      <div [ngSwitch]="widget.widgetType">
+        <div *ngSwitchCase="'HEADING'">
+          <app-widget-header></app-widget-header>
+        </div>
+        <div *ngSwitchCase="'IMAGE'"><app-widget-image></app-widget-image></div>
+        <div *ngSwitchCase="'YOUTUBE'">
+          <app-widget-youtube></app-widget-youtube>
+        </div>
+        <div *ngSwitchCase="'HTML'"><app-widget-html></app-widget-html></div>
+        <div *ngSwitchCase="'TEXT'"><app-widget-text></app-widget-text></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a class="nav-link" routerLink="/user">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </div>
 </div>

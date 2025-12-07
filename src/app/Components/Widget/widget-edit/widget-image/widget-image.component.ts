@@ -27,6 +27,7 @@ export class WidgetImageComponent implements OnInit {
   width: string = '';
   url: string = '';
   name: string = '';
+  isLoading: boolean = false;
   Name: string = '';
   myFile?: File;
   baseUrl: string = '';
@@ -125,6 +126,7 @@ export class WidgetImageComponent implements OnInit {
   // }
 
   update(e: any) {
+    this.isLoading = true;
     if (this.imageType === 'file') {
       let file = e.target[4].files[0];
       const contentType = file.type;
@@ -156,6 +158,7 @@ export class WidgetImageComponent implements OnInit {
       bucket.upload(params, (err: any, data: any) => {
         if (err) {
           console.log('There was an error uploading your file: ', err);
+          this.isLoading = false;
           return false;
         }
         //  console.log("Successfully uploaded file.", data);
@@ -177,7 +180,9 @@ export class WidgetImageComponent implements OnInit {
         params.newSubmit(params);
         params.widgetService
           .updateWidget(params.wgid, updateWidget)
-          .subscribe((widget: Widget) => {});
+          .subscribe((widget: Widget) => {
+            this.isLoading = false;
+          });
         return true;
       });
     } else {
@@ -194,10 +199,12 @@ export class WidgetImageComponent implements OnInit {
         width: this.width,
         text: this.text,
         name: this.name,
-    };
+      };
+      console.log(updateWidget, "beta");  
       this.widgetService
         .updateWidget(this.wgid, updateWidget)
         .subscribe((widget: Widget) => {
+          this.isLoading = false;
           this.router.navigate([
             '/user',
             this.uid,

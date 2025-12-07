@@ -1,34 +1,35 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { WidgetService } from "../../../../services/widget.service.client";
-import { Widget } from "../../../../models/widget.model.client";
-import { NgForm } from "@angular/forms";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { WidgetService } from '../../../../services/widget.service.client';
+import { Widget } from '../../../../models/widget.model.client';
+import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: "app-widget-text",
-  templateUrl: "./widget-text.component.html",
-  styleUrls: ["./widget-text.component.css"],
+  selector: 'app-widget-text',
+  templateUrl: './widget-text.component.html',
+  styleUrls: ['./widget-text.component.css'],
 })
 export class WidgetTextComponent implements OnInit {
-  uid: string='';
-  wid: string='';
-  pid: string='';
-  wgid: string='';
-  id: string='';
-  widgetType: string='';
-  pageId: string='';
+  uid: string = '';
+  wid: string = '';
+  pid: string = '';
+  wgid: string = '';
+  id: string = '';
+  widgetType: string = '';
+  pageId: string = '';
   size?: number;
   text?: string;
   width?: string;
   url?: string;
   name?: string;
+  isLoading: boolean = false;
   widget: Widget = {
-    id: "",
-    widgetType: "",
-    pageId: "",
+    id: '',
+    widgetType: '',
+    pageId: '',
   };
-  placeholder: string='';
-  rows: number=0;
+  placeholder: string = '';
+  rows: number = 0;
   formatted: boolean = false;
 
   constructor(
@@ -36,14 +37,14 @@ export class WidgetTextComponent implements OnInit {
     private widgetService: WidgetService,
     private router: Router
   ) {}
-  @ViewChild("f") widgetForm?: NgForm;
+  @ViewChild('f') widgetForm?: NgForm;
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
-      this.uid = params["uid"];
-      this.wid = params["wid"];
-      this.pid = params["pid"];
-      this.wgid = params["wgid"];
+      this.uid = params['uid'];
+      this.wid = params['wid'];
+      this.pid = params['pid'];
+      this.wgid = params['wgid'];
       this.widgetService
         .findWidgetById(this.wgid)
         .subscribe((widget: Widget) => {
@@ -53,6 +54,7 @@ export class WidgetTextComponent implements OnInit {
   }
 
   update() {
+    this.isLoading = true;
     this.name = this.widgetForm?.value.name;
     this.text = this.widgetForm?.value.text;
     this.placeholder = this.widgetForm?.value.placeholder;
@@ -76,14 +78,15 @@ export class WidgetTextComponent implements OnInit {
     this.widgetService
       .updateWidget(this.wgid, updateWidget)
       .subscribe((widget: Widget) => {
+        this.isLoading = false;
         this.router.navigate([
-          "/user",
+          '/user',
           this.uid,
-          "website",
+          'website',
           this.wid,
-          "page",
+          'page',
           this.pid,
-          "widget",
+          'widget',
         ]);
       });
   }
@@ -93,13 +96,13 @@ export class WidgetTextComponent implements OnInit {
       .deleteWidget(this.wgid)
       .subscribe((widgets: Widget[]) => {
         this.router.navigate([
-          "/user",
+          '/user',
           this.uid,
-          "website",
+          'website',
           this.wid,
-          "page",
+          'page',
           this.pid,
-          "widget",
+          'widget',
         ]);
       });
   }

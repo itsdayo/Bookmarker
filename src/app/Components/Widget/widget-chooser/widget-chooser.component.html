@@ -1,116 +1,271 @@
-<nav class="row navbar navbar-dark fixed-top do-gray">
-  <div class="container-fluid">
-    <div>
-      <a
-        class="do-black float-left"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
-        ><i class="fas fa-chevron-left"></i
-      ></a>
-      <a
-        class="container-fluid do-no-underline do-font-white"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/new"
-        ><b>Choose Widget</b></a
-      >
+<div class="widget-container">
+  <!-- Header -->
+  <div class="widget-header">
+    <div class="header-content">
+      <div class="header-left">
+        <a
+          class="back-btn"
+          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </a>
+        <h1 class="page-title">Choose Widget</h1>
+      </div>
+      <div class="header-right">
+        <a
+          class="add-btn"
+          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+            pid
+          }}/widget/new"
+        >
+          <i class="fas fa-plus"></i>
+        </a>
+      </div>
     </div>
   </div>
-</nav>
 
-<div class="container-fluid">
-  <ul class="list-group">
-    <li class="list-group-item do-hover do-blue">
-      <a (click)="create('HEADING')">Header</a>
-    </li>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a
-          style="cursor: not-allowed; color: black"
-          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-            pid
-          }}/widget/new"
-          >Label</a
-        >
-      </li>
-    </div>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a (click)="create('HTML')">HTML</a>
-      </li>
-    </div>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a (click)="create('TEXT')">Text Input</a>
-      </li>
-    </div>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a
-          style="cursor: not-allowed; color: black"
-          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-            pid
-          }}/widget/new"
-          >Link</a
-        >
-      </li>
-    </div>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a
-          style="cursor: not-allowed; color: black"
-          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-            pid
-          }}/widget/new"
-          >Button</a
-        >
-      </li>
-    </div>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a (click)="create('IMAGE')">Image</a>
-      </li>
-    </div>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a (click)="create('YOUTUBE')">Youtube</a>
-      </li>
-    </div>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a
-          style="cursor: not-allowed; color: black"
-          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-            pid
-          }}/widget/new"
-          >Data Table</a
-        >
-      </li>
-    </div>
-    <div>
-      <br />
-      <li class="list-group-item do-blue">
-        <a
-          style="cursor: not-allowed; color: black"
-          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
-            pid
-          }}/widget/new"
-          >Repeater</a
-        >
-      </li>
-    </div>
-  </ul>
-</div>
+  <!-- Main Content -->
+  <div class="widget-content">
+    <div class="content-wrapper">
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="hero-content">
+          <h2><i class="fas fa-magic"></i> Choose Your Widget</h2>
+          <p>
+            Select from our collection of powerful widgets to enhance your page
+          </p>
+        </div>
+      </div>
 
-<nav class="navbar navbar-dark do-gray fixed-bottom">
-  <div class="do-width">
-    <a routerLink="/user" class="do-margin-right do-margin-right float-right">
+      <!-- Widget Categories -->
+      <div class="widget-categories">
+        <div class="category-tabs">
+          <button class="category-tab active" (click)="filterCategory('all')">
+            <i class="fas fa-th"></i>
+            <span>All Widgets</span>
+          </button>
+          <button class="category-tab" (click)="filterCategory('content')">
+            <i class="fas fa-font"></i>
+            <span>Content</span>
+          </button>
+          <button class="category-tab" (click)="filterCategory('media')">
+            <i class="fas fa-photo-video"></i>
+            <span>Media</span>
+          </button>
+          <button class="category-tab" (click)="filterCategory('advanced')">
+            <i class="fas fa-code"></i>
+            <span>Advanced</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Widget Types Section -->
+      <div class="widget-types-section">
+        <div class="section-header">
+          <h2><i class="fas fa-puzzle-piece"></i> Available Widgets</h2>
+          <p>{{ getAvailableWidgetsCount() }} widgets ready to use</p>
+        </div>
+
+        <!-- Widget Types Grid -->
+        <div class="widget-types-grid">
+          <!-- Content Widgets -->
+          <div class="widget-type-card available" (click)="create('HEADING')">
+            <div class="card-header">
+              <div class="widget-icon heading-icon">
+                <i class="fas fa-heading"></i>
+              </div>
+              <div class="widget-info">
+                <h3>Header</h3>
+                <span class="widget-type-badge">Content</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <p>Add beautiful headings and titles to structure your content</p>
+              <div class="widget-features">
+                <span><i class="fas fa-check"></i> Multiple sizes</span>
+                <span><i class="fas fa-check"></i> Custom text</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget-type-card available" (click)="create('TEXT')">
+            <div class="card-header">
+              <div class="widget-icon text-icon">
+                <i class="fas fa-font"></i>
+              </div>
+              <div class="widget-info">
+                <h3>Text</h3>
+                <span class="widget-type-badge">Content</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <p>Add rich text content with customizable formatting</p>
+              <div class="widget-features">
+                <span><i class="fas fa-check"></i> Rich editor</span>
+                <span><i class="fas fa-check"></i> Multiple sizes</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget-type-card available" (click)="create('HTML')">
+            <div class="card-header">
+              <div class="widget-icon html-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <div class="widget-info">
+                <h3>HTML</h3>
+                <span class="widget-type-badge">Advanced</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <p>Add custom HTML content for maximum flexibility</p>
+              <div class="widget-features">
+                <span><i class="fas fa-check"></i> Custom code</span>
+                <span><i class="fas fa-check"></i> Full control</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Media Widgets -->
+          <div class="widget-type-card available" (click)="create('IMAGE')">
+            <div class="card-header">
+              <div class="widget-icon image-icon">
+                <i class="fas fa-image"></i>
+              </div>
+              <div class="widget-info">
+                <h3>Image</h3>
+                <span class="widget-type-badge">Media</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <p>Add images and graphics with customizable sizing</p>
+              <div class="widget-features">
+                <span><i class="fas fa-check"></i> Upload support</span>
+                <span><i class="fas fa-check"></i> Flickr search</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget-type-card available" (click)="create('YOUTUBE')">
+            <div class="card-header">
+              <div class="widget-icon youtube-icon">
+                <i class="fas fa-play"></i>
+              </div>
+              <div class="widget-info">
+                <h3>YouTube</h3>
+                <span class="widget-type-badge">Media</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <p>Embed YouTube videos with custom dimensions</p>
+              <div class="widget-features">
+                <span><i class="fas fa-check"></i> Video embed</span>
+                <span><i class="fas fa-check"></i> Custom size</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coming Soon Widgets -->
+          <div class="widget-type-card coming-soon">
+            <div class="card-header">
+              <div class="widget-icon">
+                <i class="fas fa-link"></i>
+              </div>
+              <div class="widget-info">
+                <h3>Link</h3>
+                <span class="widget-type-badge coming-soon-badge"
+                  >Coming Soon</span
+                >
+              </div>
+            </div>
+            <div class="card-body">
+              <p>Add navigation links and buttons</p>
+              <div class="widget-features">
+                <span><i class="fas fa-clock"></i> In development</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget-type-card coming-soon">
+            <div class="card-header">
+              <div class="widget-icon">
+                <i class="fas fa-table"></i>
+              </div>
+              <div class="widget-info">
+                <h3>Data Table</h3>
+                <span class="widget-type-badge coming-soon-badge"
+                  >Coming Soon</span
+                >
+              </div>
+            </div>
+            <div class="card-body">
+              <p>Add structured data tables</p>
+              <div class="widget-features">
+                <span><i class="fas fa-clock"></i> In development</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget-type-card coming-soon">
+            <div class="card-header">
+              <div class="widget-icon">
+                <i class="fas fa-redo"></i>
+              </div>
+              <div class="widget-info">
+                <h3>Repeater</h3>
+                <span class="widget-type-badge coming-soon-badge"
+                  >Coming Soon</span
+                >
+              </div>
+            </div>
+            <div class="card-body">
+              <p>Add repeating content blocks</p>
+              <div class="widget-features">
+                <span><i class="fas fa-clock"></i> In development</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Start Section -->
+      <div class="quick-start-section">
+        <div class="section-header">
+          <h2><i class="fas fa-rocket"></i> Quick Start</h2>
+          <p>Get started with our most popular widgets</p>
+        </div>
+        <div class="quick-start-grid">
+          <div class="quick-start-card" (click)="create('HEADING')">
+            <div class="quick-icon">
+              <i class="fas fa-heading"></i>
+            </div>
+            <h4>Page Title</h4>
+            <p>Start with a heading</p>
+          </div>
+          <div class="quick-start-card" (click)="create('TEXT')">
+            <div class="quick-icon">
+              <i class="fas fa-font"></i>
+            </div>
+            <h4>Text Content</h4>
+            <p>Add description</p>
+          </div>
+          <div class="quick-start-card" (click)="create('IMAGE')">
+            <div class="quick-icon">
+              <i class="fas fa-image"></i>
+            </div>
+            <h4>Hero Image</h4>
+            <p>Add visual appeal</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a class="nav-link" routerLink="/user">
       <i class="fas fa-user"></i>
+      <span>Profile</span>
     </a>
   </div>
-</nav>
+</div>

@@ -1,0 +1,535 @@
+/* ============================================== */
+/* 1. CORE LAYOUT & BACKGROUND (Glassmorphic Base) */
+/* ============================================== */
+
+.app-dashboard-layout {
+  min-height: 100vh;
+  /* Modern Blue Gradient Background */
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  color: white; /* Default text color for the background */
+}
+
+/* --- Animated background particles --- */
+.app-dashboard-layout::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(
+      circle at 20% 80%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ============================================== */
+/* 2. HEADER & NAVIGATION */
+/* ============================================== */
+
+.app-header-bar {
+  /* Glassmorphic Header Style */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.header-content-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.page-title-main {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.header-right-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Button & Link Styles (Applied to back-link and primary-button) */
+.action-link {
+  color: white;
+  border-radius: 10px;
+  padding: 8px 15px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.action-link span {
+  margin-left: 5px;
+}
+
+.back-link {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px 15px;
+  font-size: 18px;
+}
+.back-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.primary-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 10px 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+.primary-button:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* ============================================== */
+/* 3. MAIN CONTENT & SEARCH/FILTER BAR */
+/* ============================================== */
+
+.main-content-area {
+  padding: 30px 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.content-body-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+  display: flex;
+  align-items: center;
+}
+.section-description-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+
+.filter-controls-bar {
+  /* Using glassmorphic style for the controls bar */
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.search-input-group {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
+}
+
+.search-input-field {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px 15px 12px 40px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input-field::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-input-field:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #667eea;
+}
+
+.filter-pills-container {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-pill-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.filter-pill-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+}
+
+/* ============================================== */
+/* 4. WIDGET LIST LAYOUT (List-style, not Grid) */
+/* ============================================== */
+
+.widget-list {
+  display: block;
+}
+
+.widget-list-item {
+  /* List Row Styling (Full-width, separated) */
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  color: #333; /* Dark text inside the light card */
+}
+
+.widget-list-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(30, 60, 114, 0.2);
+  border-color: #667eea;
+}
+
+/* --- List Item Header (Type, Meta, Actions) --- */
+.list-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: #f8f9fa; /* Light grey background for the header row */
+  border-bottom: 1px solid #e9ecef;
+}
+
+.widget-type-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.widget-type-badge {
+  /* Icon circle - now on a light background, so solid colors work */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: white;
+  flex-shrink: 0;
+  /* Default badge color */
+  background: #495057;
+}
+
+.widget-type-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.widget-metadata-inline {
+  display: flex;
+  gap: 15px;
+  margin-left: auto;
+  padding-right: 20px;
+}
+
+.meta-data-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.meta-data-item i {
+  color: #667eea;
+}
+
+.widget-actions-menu {
+  flex-shrink: 0;
+}
+
+.action-cog-btn {
+  /* Edit button in the header */
+  width: 32px;
+  height: 32px;
+  background: #e9ecef;
+  color: #667eea;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.action-cog-btn:hover {
+  background: #667eea;
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* --- List Item Preview (Content & Edit Button) --- */
+.list-item-preview {
+  padding: 20px;
+  position: relative;
+}
+
+.widget-preview-render {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #ced4da;
+}
+
+/* Text styles inside the white preview area */
+.widget-preview-render h1,
+.widget-preview-render h2,
+.widget-preview-render h3,
+.widget-preview-render h4,
+.widget-preview-render h5,
+.widget-preview-render h6 {
+  margin: 0;
+  color: #1e3c72; /* Dark blue for headings */
+  font-weight: 600;
+}
+
+.preview-text-subtle {
+  color: #555;
+  line-height: 1.4;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.image-preview-container img,
+.youtube-preview-container {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.youtube-preview-container iframe {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.embed-responsive {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.embed-responsive-16by9 {
+  padding-bottom: 56.25%; /* This padding forces the height relative to the width */
+}
+
+/* The actual iframe/video element */
+.embed-responsive .widget-preview-render iframe,
+.embed-responsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 80%; /* Now 100% of the parent's padded height */
+  border: 0;
+}
+
+.edit-widget-full-btn {
+  /* Edit Widget button (bottom right) */
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  float: right;
+  transition: all 0.3s ease;
+}
+
+.edit-widget-full-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(30, 60, 114, 0.3);
+}
+
+.list-item-preview::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* ============================================== */
+/* 5. NO WIDGETS (Empty State) */
+/* ============================================== */
+
+.empty-state-card {
+  text-align: center;
+  padding: 60px 30px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.empty-state-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 32px;
+  margin: 0 auto 20px auto;
+}
+
+.empty-state-card h3 {
+  color: #1e3c72;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.empty-state-card p {
+  color: #555;
+  font-size: 16px;
+  margin: 0 0 30px 0;
+}
+
+.call-to-action-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.call-to-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* ============================================== */
+/* 6. RESPONSIVENESS */
+/* ============================================== */
+
+@media (max-width: 900px) {
+  .widget-metadata-inline {
+    display: none; /* Hide secondary metadata on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content-inner {
+    padding: 0 15px;
+  }
+  .page-title-main {
+    font-size: 20px;
+  }
+  .main-content-area {
+    padding: 20px 15px;
+  }
+  .filter-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-pills-container {
+    justify-content: center;
+    width: 100%;
+  }
+  .list-item-header {
+    flex-wrap: wrap;
+  }
+}

@@ -18,6 +18,7 @@ export class WebsiteNewComponent implements OnInit {
   wid: string = '';
   name: string = '';
   description: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,6 +39,7 @@ export class WebsiteNewComponent implements OnInit {
   }
 
   create() {
+    this.isLoading = true;
     this.name = this.websiteForm?.value.name;
     this.description = this.websiteForm?.value.description;
     const newWebsite: Website = {
@@ -49,6 +51,7 @@ export class WebsiteNewComponent implements OnInit {
     this.websiteService
       .createWebsite(this.uid, newWebsite)
       .subscribe((website: Website) => {
+        this.isLoading = false;
         this.router.navigate(['/user/', this.uid, 'website']);
       });
   }

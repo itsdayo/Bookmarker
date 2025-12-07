@@ -22,6 +22,7 @@ export class WidgetHtmlComponent implements OnInit {
   width?: string;
   url?: string;
   name?: string;
+  isLoading: boolean = false;
 
   widget: Widget = {
     id: '',
@@ -50,6 +51,7 @@ export class WidgetHtmlComponent implements OnInit {
   }
 
   update() {
+    this.isLoading = true;
     this.name = this.widgetForm?.value.name;
     this.text = this.widgetForm?.value.text;
 
@@ -64,6 +66,7 @@ export class WidgetHtmlComponent implements OnInit {
     this.widgetService
       .updateWidget(this.wgid, updateWidget)
       .subscribe((widget: Widget) => {
+        this.isLoading = false;
         this.router.navigate([
           '/user',
           this.uid,

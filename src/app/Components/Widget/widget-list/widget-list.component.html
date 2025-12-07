@@ -1,107 +1,264 @@
-<nav class="row navbar navbar-dark fixed-top do-gray">
-  <div class="container-fluid">
-    <div>
-      <a
-        class="do-black float-left"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page"
-        ><i class="fas fa-chevron-left"></i
-      ></a>
-      <a
-        class="container-fluid do-no-underline do-font-white"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
-        ><b>Widgets</b></a
-      >
+<div class="app-dashboard-layout">
+  <header class="app-header-bar">
+    <div class="header-content-inner">
+      <div class="header-left-actions">
+        <a
+          class="action-link back-link"
+          routerLink="/user/{{ uid }}/website/{{ wid }}/page"
+        >
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1 class="page-title-main">Widgets</h1>
+      </div>
+      <div class="header-right-actions">
+        <a
+          class="action-link primary-button"
+          routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+            pid
+          }}/widget/new"
+        >
+          <i class="fas fa-plus icon-margin-right"></i>
+          <span>Add New</span>
+        </a>
+      </div>
     </div>
-    <a
-      routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/new"
-      class="do-margin-right do-black float-right"
-      ><i class="fas fa-plus"></i
-    ></a>
-  </div>
-</nav>
+  </header>
 
-<div class="container-fluid">
-  <div *ngFor="let widget of widgets">
-    <div class="do-absolute-right do-front">
-      <a
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/{{
-          widget.id || '' 
-        }}"
-        ><i class="fas fa-cog"></i
-      ></a>
-      <!-- <a href="#" class="do-margin-right"><i class="fas fa-bars"></i></a> -->
-    </div>
-    <div class="do-margin-top do-margin-bottom" [ngSwitch]="widget.widgetType || '' ">
-      <div *ngSwitchCase="'HEADING'">
-        <div [ngSwitch]="widget.size || '' ">
-          <div *ngSwitchCase="1">
-            <h6>{{ widget.text || ''  }}</h6>
-          </div>
-          <div *ngSwitchCase="2">
-            <h5>{{ widget.text || '' }}</h5>
-          </div>
-          <div *ngSwitchCase="3">
-            <h4>{{ widget.text || '' }}</h4>
-          </div>
-          <div *ngSwitchCase="4">
-            <h3>{{ widget.text || '' }}</h3>
-          </div>
-          <div *ngSwitchCase="5">
-            <h2>{{ widget.text || ''  }}</h2>
-          </div>
-          <div *ngSwitchCase="6">
-            <h1>{{ widget.text || ''  }}</h1>
-          </div>
+  <main class="main-content-area">
+    <div class="content-body-wrapper">
+      <div class="section-meta-info">
+        <h2 class="section-title">
+          <i class="fas fa-puzzle-piece icon-margin-right"></i> Your Page
+          Widgets
+        </h2>
+        <p class="section-description-text">
+          Manage, organize, and preview your components below.
+        </p>
+      </div>
+
+      <div class="filter-controls-bar">
+        <div class="search-input-group">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            placeholder="Search widgets by type or content..."
+            class="search-input-field"
+            [(ngModel)]="searchTerm"
+            (input)="applyFilters()"
+          />
+        </div>
+        <div class="filter-pills-container">
+          <button
+            class="filter-pill-btn"
+            [class.active]="activeFilter === 'all'"
+            (click)="filterByType('all')"
+          >
+            All
+          </button>
+          <button
+            class="filter-pill-btn"
+            [class.active]="activeFilter === 'content'"
+            (click)="filterByType('content')"
+          >
+            Content
+          </button>
+          <button
+            class="filter-pill-btn"
+            [class.active]="activeFilter === 'media'"
+            (click)="filterByType('media')"
+          >
+            Media
+          </button>
         </div>
       </div>
 
-      <div class="do-margin-top" *ngSwitchCase="'TEXT'">
-        <div [ngSwitch]="widget.size || 1 ">
-          <div *ngSwitchCase="1">
-            <div style="font-size: xx-small">{{ widget.text || ''  }}</div>
-          </div>
-          <div *ngSwitchCase="2">
-            <div style="font-size: x-small">{{ widget.text || ''  }}</div>
-          </div>
-          <div *ngSwitchCase="3">
-            <div style="font-size: small">{{ widget.text || ''  }}</div>
-          </div>
-          <div *ngSwitchCase="4">
-            <div style="font-size: medium">{{ widget.text  || '' }}</div>
-          </div>
-          <div *ngSwitchCase="5">
-            <div style="font-size: large">{{ widget.text || ''  }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="do-margin-top" *ngSwitchCase="'IMAGE'">
-        <img [src]="widget.url || ''  " [style.width]="widget?.width  || ''  " />
-      </div>
-      <div class="do-margin-top" *ngSwitchCase="'YOUTUBE'">
-        <div class="embed-responsive embed-responsive-16by9">
-          <iframe
-            [src]="this.getYoutubeUrl(widget.url || '' )"
-            [style.width]="widget.width || '' "
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </div>
+      <section class="widget-list-wrapper">
+        <div
+          class="widget-list"
+          *ngIf="filteredWidgets.length > 0; else noWidgets"
+        >
+          <div
+            class="widget-list-item"
+            *ngFor="let widget of filteredWidgets; trackBy: trackByWidgetId"
+          >
+            <div class="list-item-header">
+              <div class="widget-type-details">
+                <div class="widget-type-badge">
+                  <i [ngSwitch]="widget.widgetType">
+                    <i *ngSwitchCase="'HEADING'" class="fas fa-heading"></i>
+                    <i *ngSwitchCase="'TEXT'" class="fas fa-font"></i>
+                    <i *ngSwitchCase="'IMAGE'" class="fas fa-image"></i>
+                    <i *ngSwitchCase="'YOUTUBE'" class="fas fa-play"></i>
+                    <i *ngSwitchCase="'HTML'" class="fas fa-code"></i>
+                    <i *ngSwitchDefault class="fas fa-puzzle-piece"></i>
+                  </i>
+                </div>
+                <h3 class="widget-type-name">
+                  {{ getWidgetTypeName(widget.widgetType) }}
+                </h3>
+              </div>
 
-      <!-- HTML -->
-      <div *ngSwitchCase="'HTML'">
-        <div [innerHTML]="parseHTML(widget.text || '' )"></div>
-      </div>
+              <div class="widget-metadata-inline">
+                <span class="meta-data-item" *ngIf="widget.width">
+                  <i class="fas fa-ruler-horizontal icon-margin-right"></i>
+                  {{ widget.width }}
+                </span>
+                <span class="meta-data-item" *ngIf="widget.size">
+                  <i class="fas fa-text-height icon-margin-right"></i>
+                  Size {{ widget.size }}
+                </span>
+                <span class="meta-data-item">
+                  <i class="fas fa-tag icon-margin-right"></i>
+                  ID: {{ widget.id?.substring(0, 8) }}...
+                </span>
+              </div>
+
+              <div class="widget-actions-menu">
+                <a
+                  class="action-cog-btn"
+                  routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+                    pid
+                  }}/widget/{{ widget.id }}"
+                  title="Edit Settings"
+                >
+                  <i class="fas fa-cog"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="list-item-preview">
+              <div
+                class="widget-preview-render"
+                [ngSwitch]="widget.widgetType || ''"
+              >
+                <div *ngSwitchCase="'HEADING'">
+                  <div [ngSwitch]="widget.size || 1">
+                    <h6 *ngSwitchCase="1" class="preview-text-xs">
+                      {{ widget.text }}
+                    </h6>
+                    <h5 *ngSwitchCase="2" class="preview-text-sm">
+                      {{ widget.text }}
+                    </h5>
+                    <h4 *ngSwitchCase="3" class="preview-text-md">
+                      {{ widget.text }}
+                    </h4>
+                    <h3 *ngSwitchCase="4" class="preview-text-lg">
+                      {{ widget.text }}
+                    </h3>
+                    <h2 *ngSwitchCase="5" class="preview-text-xl">
+                      {{ widget.text }}
+                    </h2>
+                    <h1 *ngSwitchCase="6" class="preview-text-xxl">
+                      {{ widget.text }}
+                    </h1>
+                  </div>
+                </div>
+
+                <div *ngSwitchCase="'TEXT'">
+                  <div [ngSwitch]="widget.size || 1">
+                    <div
+                      *ngSwitchCase="1"
+                      class="preview-text-xs text-preview-subtle"
+                    >
+                      {{ widget.text }}
+                    </div>
+                    <div
+                      *ngSwitchCase="2"
+                      class="preview-text-sm text-preview-subtle"
+                    >
+                      {{ widget.text }}
+                    </div>
+                    <div
+                      *ngSwitchCase="3"
+                      class="preview-text-md text-preview-subtle"
+                    >
+                      {{ widget.text }}
+                    </div>
+                    <div
+                      *ngSwitchCase="4"
+                      class="preview-text-lg text-preview-subtle"
+                    >
+                      {{ widget.text }}
+                    </div>
+                    <div
+                      *ngSwitchCase="5"
+                      class="preview-text-xl text-preview-subtle"
+                    >
+                      {{ widget.text }}
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngSwitchCase="'IMAGE'" class="image-preview-container">
+                  <img
+                    [src]="widget.url || ''"
+                    [style.width]="widget.width || '100%'"
+                    alt="Widget Image Preview"
+                  />
+                </div>
+
+                <div
+                  *ngSwitchCase="'YOUTUBE'"
+                  class="youtube-preview-container"
+                >
+                  <div class="preview-text-lg text-preview-subtle">
+                    {{ widget.text }}
+                  </div>
+                  <div class="embed-responsive embed-responsive-16by9">
+                    <iframe
+                      [src]="getYoutubeUrl(widget.url || '')"
+                      [style.width]="widget.width || '100%'"
+                      frameborder="0"
+                      allowfullscreen
+                      title="YouTube Video Preview"
+                    ></iframe>
+                  </div>
+                </div>
+
+                <div *ngSwitchCase="'HTML'">
+                  <div
+                    [innerHTML]="parseHTML(widget.text || '')"
+                    class="html-preview-subtle"
+                  ></div>
+                </div>
+
+                <div *ngSwitchDefault>
+                  <p class="preview-unavailable">No preview available.</p>
+                </div>
+              </div>
+
+              <a
+                class="edit-widget-full-btn"
+                routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+                  pid
+                }}/widget/{{ widget.id }}"
+              >
+                <i class="fas fa-edit icon-margin-right"></i>
+                <span>Edit Widget</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noWidgets>
+          <div class="empty-state-card">
+            <div class="empty-state-icon">
+              <i class="fas fa-puzzle-piece"></i>
+            </div>
+            <h3>No Widgets Yet</h3>
+            <p>Start by creating your first component for this page.</p>
+            <a
+              class="call-to-action-btn"
+              routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+                pid
+              }}/widget/new"
+            >
+              <i class="fas fa-plus icon-margin-right"></i>
+              Create First Widget
+            </a>
+          </div>
+        </ng-template>
+      </section>
     </div>
-  </div>
+  </main>
 </div>
-
-<footer class="navbar navbar-dark do-gray fixed-bottom">
-  <div class="do-width">
-    <a href="#" class="do-black"> <i class="fas fa-play"></i></a>
-    <a href="#" class="do-black"> <i class="fas fa-eye"></i></a>
-    <a routerLink="/user" class="do-margin-right float-right">
-      <i class="fas fa-user"></i>
-    </a>
-  </div>
-</footer>

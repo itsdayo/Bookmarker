@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
+  host: {
+    class: 'profile-page',
+  },
 })
 export class ProfileComponent implements OnInit {
   uid: string = '';
@@ -20,6 +23,7 @@ export class ProfileComponent implements OnInit {
   oldUsername: string = '';
   usernameTaken: boolean = false;
   submitSuccess: boolean = false;
+  isLoading: boolean = false;
   user: User = {
     id: '',
     username: '',
@@ -50,6 +54,12 @@ export class ProfileComponent implements OnInit {
     this.oldUsername = this.user.username;
   }
   update() {
+    if (this.isLoading) return;
+
+    this.isLoading = true;
+    this.submitSuccess = false;
+    this.usernameTaken = false;
+
     this.username = this.profileForm?.value.username;
     this.email = this.profileForm?.value.email;
     this.firstName = this.profileForm?.value.firstName;
@@ -59,28 +69,34 @@ export class ProfileComponent implements OnInit {
       .findUserByUsername(this.username)
       .subscribe((user: User) => {
         this.aUser = user;
+
+        if (this.aUser && this.oldUsername !== this.username) {
+          this.usernameTaken = true;
+          this.submitSuccess = false;
+          this.isLoading = false;
+        } else {
+          const updateUser: User = {
+            id: this.user.id,
+            username: this.username,
+            password: this.user.password,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+          };
+
+          this.userService
+            .updateUser(this.uid, updateUser)
+            .subscribe((user2: User) => {
+              this.usernameTaken = false;
+              this.submitSuccess = true;
+              this.isLoading = false;
+              // Update the shared service user
+              this.sharedService.user = updateUser;
+              // Update old username for next validation
+              this.oldUsername = this.username;
+            });
+        }
       });
-
-    if (this.aUser && this.oldUsername !== this.username) {
-      this.usernameTaken = true;
-      this.submitSuccess = false;
-    } else {
-      const updateUser: User = {
-        id: this.user.id,
-        username: this.username,
-        password: this.user.password,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        email: this.email,
-      };
-
-      this.userService
-        .updateUser(this.uid, updateUser)
-        .subscribe((user2: User) => {
-          this.usernameTaken = false;
-          this.submitSuccess = true;
-        });
-    }
   }
   logout() {
     this.userService

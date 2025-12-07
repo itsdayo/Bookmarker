@@ -1,165 +1,168 @@
-<nav class="row navbar navbar-dark fixed-top do-gray">
-  <div class="container-fluid">
-    <div>
-      <a
-        class="do-black float-left"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget"
-        ><i class="fas fa-chevron-left"></i
-      ></a>
-      <a
-        class="container-fluid do-no-underline do-font-white"
-        routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/{{
-          wgid
-        }}"
-        ><b>Widget Edit</b></a
-      >
-    </div>
-    <button
-      [disabled]="f.invalid"
-      type="submit"
-      form="widgetForm"
-      class="do-button do-black float-right"
-    >
-      <i class="fas fa-check"></i>
-    </button>
-  </div>
-</nav>
+<div class="widget-container">
+  <!-- Main Content -->
+  <div class="widget-content">
+    <div class="content-wrapper">
+      <!-- Form Section -->
+      <div class="form-section">
+        <div class="form-card">
+          <div class="card-header">
+            <h2><i class="fas fa-image"></i> Image Widget Settings</h2>
+          </div>
 
-<form
-  (ngSubmit)="update($event)"
-  #f="ngForm"
-  id="widgetForm"
-  class="container-fluid"
->
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input
-      ngModel="{{ widget.name }}"
-      #name="ngModel"
-      type="text"
-      name="name"
-      class="form-control"
-      placeholder="Enter a widget name..."
-    />
-  </div>
+          <div class="card-body">
+            <form id="widgetForm" (ngSubmit)="update($event)" #f="ngForm">
+              <!-- Widget Name -->
+              <div class="form-group">
+                <label for="name" class="form-label">
+                  <i class="fas fa-tag"></i> Widget Name
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Enter a widget name..."
+                  [ngModel]="widget.name"
+                  #name="ngModel"
+                  [disabled]="isLoading"
+                />
+              </div>
 
-  <div class="form-group">
-    <label for="text">Text</label>
-    <input
-      ngModel="{{ widget.text }}"
-      #text="ngModel"
-      type="text"
-      name="text"
-      class="form-control"
-      placeholder="Enter a widget text..."
-    />
-  </div>
+              <!-- Widget Text/Alt Text -->
+              <div class="form-group">
+                <label for="text" class="form-label">
+                  <i class="fas fa-info-circle"></i> Alt Text
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="text"
+                  id="text"
+                  placeholder="Enter image alt text..."
+                  [ngModel]="widget.text"
+                  #text="ngModel"
+                  [disabled]="isLoading"
+                />
+              </div>
 
-  <div class="form-group">
-    <label for="width">Width</label>
-    <input
-      ngModel="{{ widget.width }}"
-      #width="ngModel"
-      type="text"
-      name="width"
-      class="form-control"
-      placeholder="100%"
-    />
-  </div>
-  <div [ngSwitch]="imageType">
-    <div *ngSwitchCase="'url'" class="form-group">
-      <div class="alert alert-danger" *ngIf="url.invalid && url.touched">
-        Please enter a url!
+              <!-- Image Width -->
+              <div class="form-group">
+                <label for="width" class="form-label">
+                  <i class="fas fa-arrows-alt-h"></i> Image Width
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="width"
+                  id="width"
+                  placeholder="100%"
+                  [ngModel]="widget.width"
+                  #width="ngModel"
+                  [disabled]="isLoading"
+                />
+              </div>
+
+              <!-- Image Source Selection -->
+              <div [ngSwitch]="imageType">
+                <!-- URL Input -->
+                <div *ngSwitchCase="'url'" class="form-group">
+                  <label for="url" class="form-label">
+                    <i class="fas fa-link"></i> Image URL
+                  </label>
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="url.invalid && (url.dirty || url.touched)"
+                  >
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span *ngIf="url.errors?.['required']"
+                      >Image URL is required</span
+                    >
+                    <span *ngIf="url.errors?.['pattern']"
+                      >Please enter a valid URL (must start with http:// or
+                      https://)</span
+                    >
+                  </div>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="url"
+                    id="url"
+                    placeholder="https://www.image.com"
+                    [(ngModel)]="widget.url"
+                    #url="ngModel"
+                    required
+                    pattern="https?://.+"
+                    [disabled]="isLoading"
+                    [ngClass]="{
+                      'is-invalid': url.invalid && (url.dirty || url.touched)
+                    }"
+                  />
+                </div>
+
+                <!-- File Upload -->
+                <div *ngSwitchCase="'file'" class="form-group">
+                  <label class="form-label">
+                    <i class="fas fa-upload"></i> Upload Image
+                  </label>
+                  <div class="upload-section">
+                    <p class="upload-text">
+                      File upload functionality coming soon
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="changeImageStatus()"
+                      [disabled]="isLoading"
+                    >
+                      <i class="fas fa-link"></i>
+                      Enter URL Instead
+                    </button>
+                  </div>
+                </div>
+                <span *ngSwitchDefault>Not working</span>
+              </div>
+
+              <!-- Flickr Search Button -->
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="flickr-btn"
+                  routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{
+                    pid
+                  }}/widget/{{ wgid }}/flickr"
+                  [disabled]="isLoading"
+                >
+                  <i class="fab fa-flickr"></i>
+                  Photos from Flickr
+                </button>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="save-btn"
+                  [disabled]="!widget.url || f.invalid || isLoading"
+                >
+                  <i class="fas fa-save"></i>
+                  <span *ngIf="!isLoading">Save Changes</span>
+                  <span *ngIf="isLoading">Saving...</span>
+                </button>
+                <button
+                  type="button"
+                  class="delete-btn"
+                  (click)="delete()"
+                  [disabled]="isLoading"
+                  *ngIf="widget.url"
+                >
+                  <i class="fas fa-trash"></i>
+                  Delete Widget
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-      <div class="alert alert-danger" *ngIf="width.invalid && width.touched">
-        Please enter a width!
-      </div>
-
-      <label for="url">URL</label>
-      <br />
-      <input
-        ngModel="{{ widget.url }}"
-        #url="ngModel"
-        type="text"
-        name="url"
-        class="do-image-input"
-        placeholder="https://www.image.com"
-      />
-      <!-- <button (click)="changeImageStatus()" class="btn btn-danger btn">
-        Cancel
-      </button> -->
     </div>
-
-    <!-- <div class="form-group">
-			<label for="upload">Upload</label>
-			<input class="form-control" type="file" name="upload">
-    </div> -->
-    <!-- <form (ngSubmit)="uploadFile()" #f="ngForm" id="fileForm"> -->
-
-    <div *ngSwitchCase="'file'" class="form-group do-short-width">
-      <label>Upload</label>
-      <br />
-      <!-- <input
-        ngModel="$event"
-        name="fileUpload"
-        type="file"
-        class="do-image-input"
-      /> -->
-
-      <button (click)="changeImageStatus()" class="btn btn-success btn">
-        Enter a Url
-      </button>
-    </div>
-    <span *ngSwitchDefault> Not working</span>
   </div>
-  <!-- </form> -->
-
-  <!-- <form
-    (ngSubmit)="update()" #f="ngForm" id="widgetForm" class="container-fluid"
-    action="{{ baseUrl }}/api/user/{{ uid }}/website/{{ wid }}/page/{{
-      pid
-    }}/widget/{{ wgid }}/upload"
-    method="post"
-    enctype="multipart/form-data"
-  >
-    <div>
-      <label class="form-group">Upload</label>
-      <input
-        ngModel="{{ widget.upload }}"
-        #width="ngModel"
-        name="myFile"
-        type="file"
-        class="form-control"
-      />
-      <br />
-
-      <button type="button" class="btn btn-block btn-secondary">Upload</button>
-    </div>
-  </form> -->
-  <br />
-  <button
-    type="button"
-    class="btn btn-primary btn-block"
-    routerLink="/user/{{ uid }}/website/{{ wid }}/page/{{ pid }}/widget/{{
-      wgid
-    }}/flickr"
-  >
-    Photos from Flickr
-  </button>
-  <button
-    type="submit"
-    [disabled]="f.invalid"
-    class="btn btn-block btn-primary"
-  >
-    Submit
-  </button>
-  <button type="button" class="btn btn-block btn-danger" (click)="delete()">
-    Delete
-  </button>
-</form>
-
-<nav class="navbar navbar-dark do-gray fixed-bottom">
-  <div class="do-width">
-    <a routerLink="/user" class="float-right"> <i class="fas fa-user"></i> </a>
-  </div>
-</nav>
+</div>

@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
   selector: 'app-widget-text',
   templateUrl: './widget-text.component.html',
   styleUrls: ['./widget-text.component.css'],
+  standalone: false,
 })
 export class WidgetTextComponent implements OnInit {
   uid: string = '';

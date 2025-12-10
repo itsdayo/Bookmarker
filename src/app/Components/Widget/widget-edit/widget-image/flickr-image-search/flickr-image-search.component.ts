@@ -8,6 +8,7 @@ import { Widget } from '../../../../../models/widget.model.client';
   selector: 'app-flickr-image-search',
   templateUrl: './flickr-image-search.component.html',
   styleUrls: ['./flickr-image-search.component.css'],
+  standalone: false,
 })
 export class FlickrImageSearchComponent implements OnInit {
   uid: string = '';

@@ -7,6 +7,7 @@ import { PageService } from '../../../services/page.service.client';
   selector: 'app-page-list',
   templateUrl: './page-list.component.html',
   styleUrls: ['./page-list.component.css'],
+  standalone: false,
 })
 export class PageListComponent implements OnInit {
   uid: string = '';

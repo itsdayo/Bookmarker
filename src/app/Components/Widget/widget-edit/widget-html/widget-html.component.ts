@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
   selector: 'app-widget-html',
   templateUrl: './widget-html.component.html',
   styleUrls: ['./widget-html.component.css'],
+  standalone: false,
 })
 export class WidgetHtmlComponent implements OnInit {
   uid: string = '';
@@ -28,7 +29,33 @@ export class WidgetHtmlComponent implements OnInit {
     id: '',
     widgetType: '',
     pageId: '',
+    text: '',
+    name: '',
   };
+
+  // Quill editor configuration
+  editorModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      [{ header: 1 }, { header: 2 }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ script: 'sub' }, { script: 'super' }],
+      [{ indent: '-1' }, { indent: '+1' }],
+      [{ direction: 'rtl' }],
+      [{ size: ['small', false, 'large', 'huge'] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ color: [] }, { background: [] }],
+      [{ font: [] }],
+      [{ align: [] }],
+      ['link', 'image', 'video'],
+      ['clean'],
+      ['html'], // Enable HTML editing
+    ],
+    syntax: true,
+  };
+
+  editorFormat: 'html' = 'html';
   constructor(
     private activatedRoute: ActivatedRoute,
     private widgetService: WidgetService,
@@ -45,15 +72,19 @@ export class WidgetHtmlComponent implements OnInit {
       this.widgetService
         .findWidgetById(this.wgid)
         .subscribe((widget: Widget) => {
-          this.widget = widget;
+          this.widget = {
+            ...widget,
+            text: widget.text || '',
+            name: widget.name || '',
+          };
         });
     });
   }
 
   update() {
     this.isLoading = true;
-    this.name = this.widgetForm?.value.name;
-    this.text = this.widgetForm?.value.text;
+    this.name = this.widgetForm?.value.name || this.widget.name;
+    this.text = this.widget.text; // Use widget.text directly from Quill editor
 
     const updateWidget: Widget = {
       id: this.wgid,

@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
   host: {
     class: 'profile-page',
   },
+  standalone: false,
 })
 export class ProfileComponent implements OnInit {
   uid: string = '';

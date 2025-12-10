@@ -9,6 +9,7 @@ import { SharedService } from '../../../services/shared.service.client';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  standalone: false,
 })
 export class LoginComponent implements OnInit {
   @ViewChild('f') loginForm?: NgForm;

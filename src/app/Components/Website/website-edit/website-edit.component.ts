@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
   selector: 'app-website-edit',
   templateUrl: './website-edit.component.html',
   styleUrls: ['./website-edit.component.css'],
+  standalone: false,
 })
 export class WebsiteEditComponent implements OnInit {
   uid: string = '';

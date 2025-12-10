@@ -8,6 +8,7 @@ import { SharedService } from '../../../services/shared.service.client';
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
+  standalone: false,
 })
 export class RegisterComponent implements OnInit {
   @ViewChild('f') registerForm?: NgForm;

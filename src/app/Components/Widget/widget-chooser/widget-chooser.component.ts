@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-widget-chooser',
   templateUrl: './widget-chooser.component.html',
   styleUrls: ['./widget-chooser.component.css'],
+  standalone: false,
 })
 export class WidgetChooserComponent implements OnInit {
   uid: string = '';
@@ -44,7 +45,7 @@ export class WidgetChooserComponent implements OnInit {
       widgetType: type,
       pageId: this.pid,
     };
-   
+
     this.widgetService
       .createWidget(this.pid, newWidget)
       .subscribe((widget: Widget) => {

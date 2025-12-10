@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
   selector: 'app-widget-youtube',
   templateUrl: './widget-youtube.component.html',
   styleUrls: ['./widget-youtube.component.css'],
+  standalone: false,
 })
 export class WidgetYoutubeComponent implements OnInit {
   uid: string = '';

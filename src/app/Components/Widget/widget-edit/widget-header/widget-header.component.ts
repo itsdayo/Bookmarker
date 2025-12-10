@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
   selector: 'app-widget-header',
   templateUrl: './widget-header.component.html',
   styleUrls: ['./widget-header.component.css'],
+  standalone: false,
 })
 export class WidgetHeaderComponent implements OnInit {
   uid: string = '';

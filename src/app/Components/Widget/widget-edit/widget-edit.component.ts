@@ -6,6 +6,7 @@ import { Widget } from '../../../models/widget.model.client';
   selector: 'app-widget-edit',
   templateUrl: './widget-edit.component.html',
   styleUrls: ['./widget-edit.component.css'],
+  standalone: false,
 })
 export class WidgetEditComponent implements OnInit {
   uid: string = '';

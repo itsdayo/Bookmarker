@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   selector: 'app-widget-list',
   templateUrl: './widget-list.component.html',
   styleUrls: ['./widget-list.component.css'],
+  standalone: false,
 })
 export class WidgetListComponent implements OnInit {
   uid: string = '';
@@ -36,7 +37,7 @@ export class WidgetListComponent implements OnInit {
         .findWidgetByPageId(this.pid)
         .subscribe((widgets: Widget[]) => {
           this.widgets = widgets || [];
-          console.log(this.widgets, 'alpha');
+
           // ⭐ SORT BY DATE (newest ➝ oldest)
           this.widgets.sort((a, b) => {
             const dateA = new Date(a.dateCreated || 0).getTime();

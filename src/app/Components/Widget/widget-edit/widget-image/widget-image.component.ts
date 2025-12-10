@@ -4,7 +4,6 @@ import { WidgetService } from '../../../../services/widget.service.client';
 import { Widget } from '../../../../models/widget.model.client';
 import { NgForm } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 //import * as AWS from "aws-sdk/global";
 import { S3 } from 'aws-sdk';
@@ -13,6 +12,7 @@ import { SecretKeysService } from '../../../../services/env.service.client';
   selector: 'app-widget-image',
   templateUrl: './widget-image.component.html',
   styleUrls: ['./widget-image.component.css'],
+  standalone: false,
 })
 export class WidgetImageComponent implements OnInit {
   uid: string = '';
@@ -200,7 +200,7 @@ export class WidgetImageComponent implements OnInit {
         text: this.text,
         name: this.name,
       };
-      console.log(updateWidget, "beta");  
+
       this.widgetService
         .updateWidget(this.wgid, updateWidget)
         .subscribe((widget: Widget) => {

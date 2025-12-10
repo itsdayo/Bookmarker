@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-website-list',
   templateUrl: './website-list.component.html',
   styleUrls: ['./website-list.component.css'],
+  standalone: false,
 })
 export class WebsiteListComponent implements OnInit {
   uid: string = '';

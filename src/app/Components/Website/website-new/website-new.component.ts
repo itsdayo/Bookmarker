@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   selector: 'app-website-new',
   templateUrl: './website-new.component.html',
   styleUrls: ['./website-new.component.css'],
+  standalone: false,
 })
 export class WebsiteNewComponent implements OnInit {
   @ViewChild('f') websiteForm?: NgForm;

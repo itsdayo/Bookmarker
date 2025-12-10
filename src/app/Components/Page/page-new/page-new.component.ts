@@ -8,6 +8,7 @@ import { PageService } from '../../../services/page.service.client';
   selector: 'app-page-new',
   templateUrl: './page-new.component.html',
   styleUrls: ['./page-new.component.css'],
+  standalone: false,
 })
 export class PageNewComponent implements OnInit {
   uid: string = '';

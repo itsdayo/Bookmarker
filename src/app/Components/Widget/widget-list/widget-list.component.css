@@ -8,7 +8,7 @@
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   min-height: 100vh;
   color: #222;
-
+  min-height: -webkit-fill-available;
   top: 0;
   left: 0;
   right: 0;
@@ -42,6 +42,12 @@
   font-weight: 600;
   font-family: Arial, sans-serif;
   font-size: 0.95rem;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
 }
 
 .back-link:hover {
@@ -70,6 +76,9 @@
   align-items: center;
   gap: 0.5rem;
   transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .btn-add:hover,
@@ -212,6 +221,8 @@
   transition: all 0.2s;
   z-index: 10;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .article-block {
@@ -268,5 +279,85 @@
     padding: 0 1rem;
     flex-direction: column;
     text-align: center;
+  }
+  .app-header-bar {
+    padding: 0.5rem 0;
+  }
+  .edit-float-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-inner {
+    padding: 0 0.5rem;
+  }
+  .article-live-preview {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+  .cnn-article-body {
+    padding: 1.5rem 0;
+    font-size: 1rem;
+  }
+  .article-h1 {
+    font-size: 2rem;
+  }
+  .article-h2 {
+    font-size: 1.8rem;
+  }
+  .article-h3 {
+    font-size: 1.6rem;
+  }
+  .article-paragraph {
+    margin: 1.2em 0;
+  }
+  .btn-add,
+  .btn-add-large {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+  .edit-float-btn {
+    width: 40px;
+    height: 40px;
+    top: 8px;
+    right: 8px;
+  }
+  .article-block {
+    padding: 1rem 2.5rem 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .article-live-preview {
+    margin: 0.5rem auto;
+    padding: 0 0.25rem;
+  }
+  .cnn-article-body {
+    padding: 1rem 0;
+    font-size: 0.95rem;
+  }
+  .article-h1 {
+    font-size: 1.8rem;
+  }
+  .article-h2 {
+    font-size: 1.6rem;
+  }
+  .article-h3 {
+    font-size: 1.4rem;
+  }
+  .header-inner h1 {
+    font-size: 1.5rem;
+  }
+  .btn-add,
+  .btn-add-large {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  .edit-float-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
 }

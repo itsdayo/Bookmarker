@@ -13,6 +13,7 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
+  min-height: -webkit-fill-available;
 }
 
 body {
@@ -58,6 +59,9 @@ body {
   justify-content: center;
   transition: all 0.3s ease;
   font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .back-btn:hover {
@@ -92,6 +96,9 @@ body {
   font-size: 16px;
   cursor: pointer;
   gap: 8px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .save-btn:hover:not(:disabled) {
@@ -142,6 +149,9 @@ body {
   gap: 8px;
   transition: all 0.3s ease;
   font-size: 14px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .nav-link:hover {
@@ -157,6 +167,13 @@ body {
 @media (max-width: 768px) {
   .header-content {
     padding: 0 15px;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .widget-header {
+    padding: 10px 0;
   }
 
   .page-title {
@@ -169,5 +186,46 @@ body {
 
   .content-wrapper {
     max-width: 100%;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    padding: 10px 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0 10px;
+  }
+
+  .widget-content {
+    padding: 15px 10px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .back-btn,
+  .save-btn,
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .widget-content {
+    padding: 10px 5px;
+  }
+
+  .back-btn,
+  .save-btn,
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 11px;
+    min-height: 40px;
   }
 }

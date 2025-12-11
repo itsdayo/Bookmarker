@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
   register() {
     if (this.isLoading) return;
 
-    this.username = this.registerForm?.value.username;
+    this.username = this.registerForm?.value.username?.toLowerCase() || '';
     this.password = this.registerForm?.value.password;
     this.verifyPassword = this.registerForm?.value.verifyPassword;
 

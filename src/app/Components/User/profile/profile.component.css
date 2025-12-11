@@ -11,6 +11,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  min-height: -webkit-fill-available;
 }
 
 body.profile-page {
@@ -168,12 +169,16 @@ body.profile-page {
   font-size: 16px;
   transition: all 0.3s ease;
   background-color: #f8f9fa;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .form-control:focus {
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   background-color: white;
+  outline: none;
 }
 
 .form-control.is-invalid {
@@ -258,6 +263,9 @@ body.profile-page {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .btn-primary {
@@ -355,6 +363,12 @@ body.profile-page {
   .action-card {
     padding: 20px;
   }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -393,5 +407,49 @@ body.profile-page {
   .btn {
     padding: 10px 20px;
     font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .profile-content {
+    padding: 10px 5px;
+  }
+
+  .card-header {
+    padding: 10px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .action-card {
+    padding: 10px;
+  }
+
+  .profile-header {
+    padding: 10px 0;
+  }
+
+  .header-content {
+    padding: 0 5px;
+  }
+
+  .profile-avatar {
+    font-size: 28px;
+  }
+
+  .profile-info h1 {
+    font-size: 18px;
+  }
+
+  .profile-info p {
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 8px 15px;
+    font-size: 11px;
+    min-height: 40px;
   }
 }

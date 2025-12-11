@@ -6,7 +6,6 @@
   padding: 0;
   box-sizing: border-box;
   overflow-y: auto;
-  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -645,7 +644,7 @@ select.form-control {
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding: 15px 0;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
@@ -782,6 +781,13 @@ select.form-control {
     font-size: 18px;
   }
 
+  .back-btn,
+  .save-btn,
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
   .form-card .card-header {
     padding: 20px;
   }
@@ -851,8 +857,9 @@ select.form-control {
     padding: 12px 10px;
   }
 
-  .btn {
-    padding: 10px 12px;
+  .btn,
+  .nav-link {
+    padding: 6px 10px;
     font-size: 11px;
     min-height: 40px;
   }

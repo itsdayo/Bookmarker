@@ -5,12 +5,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   min-height: -webkit-fill-available;
+  padding-bottom: 150px;
 }
 
 body {
@@ -379,8 +379,10 @@ body {
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding: 15px 0;
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
   text-align: right;
 }
 
@@ -425,7 +427,7 @@ body {
   }
 
   .header-content {
-    flex-direction: column;
+    flex-direction: row;
     gap: 15px;
     text-align: center;
   }
@@ -486,6 +488,13 @@ body {
 
   .page-title {
     font-size: 18px;
+  }
+
+  .back-btn,
+  .save-btn,
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 
   .card-header {
@@ -557,8 +566,9 @@ body {
   }
 
   .save-btn,
-  .delete-btn {
-    padding: 10px 12px;
+  .delete-btn,
+  .nav-link {
+    padding: 6px 10px;
     font-size: 11px;
     min-height: 40px;
   }

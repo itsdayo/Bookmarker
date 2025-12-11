@@ -6,12 +6,12 @@
   padding: 0;
   box-sizing: border-box;
   overflow-y: auto;
-  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   min-height: -webkit-fill-available;
+  padding-bottom: 150px;
 }
 
 body.profile-page {

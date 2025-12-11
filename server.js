@@ -25,7 +25,7 @@ const allowedOrigins = [
   "https://bookmarker-storer.netlify.app",
   "https://bookmarker-storer.netlify.app/",
   "https://bookmarker-server.onrender.com",
-  "https://bookmarker-server.onrender.com/"
+  "https://bookmarker-server.onrender.com/",
 ];
 
 // Add development origins if not in production
@@ -42,13 +42,13 @@ const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
+
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
 
     // For debugging
-    console.log('CORS blocked for origin:', origin);
+    console.log("CORS blocked for origin:", origin);
     return callback(new Error(`Not allowed by CORS: ${origin}`));
   },
   credentials: true,
@@ -64,18 +64,18 @@ const corsOptions = {
   ],
   optionsSuccessStatus: 204,
   preflightContinue: false,
-  maxAge: 600 // 10 minutes
+  maxAge: 600, // 10 minutes
 };
 
 // Apply CORS before other middleware
 app.use(cors(corsOptions));
 
 // Handle preflight requests
-app.options('*', cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Trust first proxy in production (important for secure cookies)
 if (process.env.NODE_ENV === "production") {
-  app.set('trust proxy', 1);
+  app.set("trust proxy", 1);
 }
 
 // Session configuration
@@ -85,12 +85,12 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === "production", // true in production
-    sameSite: process.env.NODE_ENV === "production" ? 'None' : 'Lax',
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    path: '/',
+    path: "/",
   },
-  name: 'bookmarker.sid' // Custom session cookie name
+  name: "bookmarker.sid", // Custom session cookie name
 };
 
 app.use(cookieParser(process.env.SESSION_SECRET || "test"));
@@ -129,6 +129,10 @@ app.get("*", function (req, res) {
 
 // Start server
 server.listen(port, function () {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${port}`);
-  console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
+  console.log(
+    `Server running in ${
+      process.env.NODE_ENV || "development"
+    } mode on port ${port}`
+  );
+  console.log(`Allowed origins: ${allowedOrigins.join(", ")}`);
 });

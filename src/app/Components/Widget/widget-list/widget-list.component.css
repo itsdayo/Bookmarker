@@ -277,11 +277,12 @@
   }
   .header-inner {
     padding: 0 1rem;
-    flex-direction: column;
+    flex-direction: row;
     text-align: center;
   }
   .app-header-bar {
     padding: 0.5rem 0;
+    flex-direction: row;
   }
   .edit-float-btn {
     width: 44px;
@@ -314,9 +315,10 @@
     margin: 1.2em 0;
   }
   .btn-add,
-  .btn-add-large {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
+  .btn-add-large,
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 12px;
   }
   .edit-float-btn {
     width: 40px;
@@ -348,12 +350,14 @@
     font-size: 1.4rem;
   }
   .header-inner h1 {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
   .btn-add,
-  .btn-add-large {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.85rem;
+  .btn-add-large,
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 11px;
+    min-height: 40px;
   }
   .edit-float-btn {
     width: 36px;
